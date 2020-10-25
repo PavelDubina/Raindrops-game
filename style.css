@@ -24,6 +24,25 @@
   background: rgba(134, 241, 200, 0.4);
   flex: 1;
 }
+/*expression*/
+.circle{
+  position: relative;
+  background:rgba(134, 241, 200, 0.4);
+  border-radius: 50%;
+  width: 10%;
+  height: 10%;
+  border: 2px solid rgba(54, 95, 79, 0.24);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+}
+.operation{
+  position: absolute;
+  left: 10%;
+}
 /*img*/
 .stone {
   position: absolute;
