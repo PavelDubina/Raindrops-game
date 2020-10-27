@@ -5,25 +5,44 @@ const buttonPad = document.querySelector('.button-container');
 const buttons = document.querySelectorAll('.grid');
 const scoreBoard = document.querySelector('.score--num');
 const mainAudio = document.querySelector('.main--theme');
-const dropSound = document.querySelector('.drop--sound')
+const dropSound = document.querySelector('.drop--sound');
+const rightSound = document.querySelector('.right--sound');
+const failSound = document.querySelector('.fail--sound');
+const failBoarder =document.querySelector('.fail--text');
 const opArr = ['+','-','*','/'];
 let gameOver = false;
 let gameItaration = 0; // Количество проигрышей
 let score = 0; //количество очков
-let animationTime = 10000;//длительность анимации падения
-let createTime = 5000; //время создания капель
+let scorePrice = 10;
+let animationTime = 8000;//длительность анимации падения
+let createTime = 4000; //время создания капель
+
 
 
 //функция нажатия на клавишу Enter
 function useEnter(){
+    const drop = document.querySelectorAll('.circle');
     if(!displayValue.value) return;
-            for(let one of document.querySelectorAll('.circle')){
+            for(let one of drop){ 
             if(eval(one.textContent) === +displayValue.value){
-                score += 10; 
+                rightSound.currentTime = 0;
+                rightSound.play();
+                score += scorePrice; 
+                scorePrice++;
                 gamePlace.removeChild(one); 
                 break;  
-            } else score = score <= 0 ? 0 : score - 10;
+            } else { 
+                if(one !== drop[drop.length-1]) continue; //Если ответ не совпадает ни с одной каплей => ошибка
+                    failSound.currentTime = 0;
+                    failSound.play();
+                    failBoarder.innerHTML = -(--scorePrice);
+                    failBoarder.classList.add('open');
+                    setTimeout(() => {
+                            failBoarder.classList.remove('open');
+                    }, 500);
+                    score = score <= 0 ? 0 : score - scorePrice;                  
         }
+    }
         displayValue.value = '';
         scoreBoard.textContent = score;
 }
@@ -90,7 +109,9 @@ function createCircle(){
         if(!gameOver){
             createCircle();
         } else {
-            gamePlace.removeChild(circle)
+            document.querySelectorAll('.circle').forEach(drop=>{
+                gamePlace.removeChild(drop)
+            })
         }
     }, createTime);
 }
@@ -113,8 +134,10 @@ function animate(circle, time){
             gamePlace.removeChild(circle);
             gameItaration++;
             wave.style.height = `${wave.offsetHeight + 20}px`//!!!! вопрос
+            score -= 10;
+            scoreBoard.innerHTML = score <= 0 ? 0 : score - 10;
             dropSound.play(); //звук падения капли
-            if(gameItaration === 2) {gameOver = !gameOver}; // Если количество проигрышей больше
+            if(gameItaration >= 3) {gameOver = !gameOver}; // Если количество проигрышей больше
           } catch {
               return;
           }
@@ -145,7 +168,7 @@ function innerCircle(fO, op, sO){
 
 
 
-createCircle();
+  createCircle();
 
 
 
@@ -154,7 +177,7 @@ createCircle();
  buttonPad.addEventListener('click', updateDisplay);
  window.addEventListener('keydown', updateDisplayWithKeyboard);
  window.addEventListener('keyup', activateButtons)
- mainAudio.play();
+//  mainAudio.play();
  
 
 
