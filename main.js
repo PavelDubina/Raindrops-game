@@ -1,18 +1,41 @@
 const gamePlace = document.querySelector('.game--place');
 const wave = document.querySelector('.wave');
 const displayValue = document.querySelector('.display--input');
-const buttons = document.querySelector('.button-container');
+const buttonPad = document.querySelector('.button-container');
+const buttons = document.querySelectorAll('.grid');
 const scoreBoard = document.querySelector('.score--num');
 const mainAudio = document.querySelector('.main--theme');
+const dropSound = document.querySelector('.drop--sound')
 const opArr = ['+','-','*','/'];
 let gameOver = false;
 let gameItaration = 0; // Количество проигрышей
 let score = 0; //количество очков
+let animationTime = 10000;//длительность анимации падения
+let createTime = 5000; //время создания капель
 
 
+//функция нажатия на клавишу Enter
+function useEnter(){
+    if(!displayValue.value) return;
+            for(let one of document.querySelectorAll('.circle')){
+            if(eval(one.textContent) === +displayValue.value){
+                score += 10; 
+                gamePlace.removeChild(one); 
+                break;  
+            } else score = score <= 0 ? 0 : score - 10;
+        }
+        displayValue.value = '';
+        scoreBoard.textContent = score;
+}
 
-
-
+//Подсвечивание кнопок
+function activateButtons(e){
+    buttons.forEach(but => {
+        if(but.dataset.num === e.key || but.dataset.but === e.key){
+            but.classList.toggle('activate');
+        }
+    });
+}
 //Передача значение на дисплей и сравнение с каплями
 function updateDisplay(e){
     if(displayValue.value.length < 3 && e.target.dataset.num) {
@@ -21,47 +44,37 @@ function updateDisplay(e){
     switch(e.target.dataset.but){
         case '+': displayValue.value = '';
         break;
-        case 'delete': displayValue.value = displayValue.value.substring(0, displayValue.value.length - 1);
+        case '.': displayValue.value = displayValue.value.substring(0, displayValue.value.length - 1);
         break;
-        case 'Enter': for(let key of document.querySelectorAll('.circle')){
-            if(eval(key.textContent) === +displayValue.value){
-                score += 10; 
-                gamePlace.removeChild(key); 
-                break;  
-            } else score = score <= 0 ? 0 : score - 10;
-        }
-        displayValue.value = '';
-        scoreBoard.textContent = score;
+        case 'Enter': 
+        useEnter();
     }  
 }
 
 //Передача значения на дисплей с клавиатуры и сравнение с другими каплями
 function updateDisplayWithKeyboard(e){
-    if(e.location !== 3) return; // Проверяем действительно ли нажата кнопка поля numpad
+    if(e.location !== 3 ) return; // Проверяем действительно ли нажата кнопка поля numpad
     switch(e.key){
+        case '/': return;
+        case '*': return;
+        case '-': return;
         case '+': displayValue.value = '';
         break;
         case '.': displayValue.value = displayValue.value.substring(0, displayValue.value.length - 1);
         break;
-        case 'Enter': for(let key of document.querySelectorAll('.circle')){
-            if(eval(key.textContent) === +displayValue.value){
-                score += 10;
-                gamePlace.removeChild(key);
-                break;
-            } else score = score <= 0 ? 0 : score - 10;    
-        }
-        displayValue.value = '';
-        scoreBoard.innerHTML = score;
+        case 'Enter': 
+        useEnter(); 
         break;
         default: 
         if(displayValue.value.length < 3) {
             displayValue.value += e.key
         } 
     }
+    activateButtons(e);
 }
 
 //Создание капель
-function createCircle(timeAddCircle){
+function createCircle(){
     const circle = document.createElement('div');
     const firstOperand = document.createElement('span');
     const secondOperand = document.createElement('span');
@@ -75,11 +88,11 @@ function createCircle(timeAddCircle){
     animate(circle, 10000); // Добавление анимации
     setTimeout(() => {
         if(!gameOver){
-            createCircle(timeAddCircle);
+            createCircle();
         } else {
             gamePlace.removeChild(circle)
         }
-    }, timeAddCircle);
+    }, createTime);
 }
 
 //Определение позиции left
@@ -94,11 +107,13 @@ function findHeightWave(){
 function animate(circle, time){
     circle.animate([ { top: 0 },
         { top: `${findHeightWave() - circle.offsetHeight}px`} ],
-      time).finished.then(()=> {
+      time).finished
+        .then(()=> {
           try{
             gamePlace.removeChild(circle);
             gameItaration++;
-            wave.style.height = `${wave.offsetHeight + 20}px` //!!!! вопрос
+            wave.style.height = `${wave.offsetHeight + 20}px`//!!!! вопрос
+            dropSound.play(); //звук падения капли
             if(gameItaration === 2) {gameOver = !gameOver}; // Если количество проигрышей больше
           } catch {
               return;
@@ -130,15 +145,16 @@ function innerCircle(fO, op, sO){
 
 
 
-createCircle(5000);
+createCircle();
 
 
 
 
 
- buttons.addEventListener('click', updateDisplay);
+ buttonPad.addEventListener('click', updateDisplay);
  window.addEventListener('keydown', updateDisplayWithKeyboard);
-
-
-
+ window.addEventListener('keyup', activateButtons)
  mainAudio.play();
+ 
+
+
