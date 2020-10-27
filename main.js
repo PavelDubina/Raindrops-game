@@ -27,7 +27,7 @@ function useEnter(){
             if(eval(one.textContent) === +displayValue.value){
                 rightSound.currentTime = 0;
                 rightSound.play();
-                score += scorePrice; 
+                score += scorePrice = scorePrice<10?10:scorePrice; 
                 scorePrice++;
                 gamePlace.removeChild(one); 
                 break;  
@@ -35,7 +35,7 @@ function useEnter(){
                 if(one !== drop[drop.length-1]) continue; //Если ответ не совпадает ни с одной каплей => ошибка
                     failSound.currentTime = 0;
                     failSound.play();
-                    failBoarder.innerHTML = -(--scorePrice);
+                    failBoarder.innerHTML = -(--scorePrice<10?10:scorePrice);
                     failBoarder.classList.add('open');
                     setTimeout(() => {
                             failBoarder.classList.remove('open');
@@ -108,11 +108,9 @@ function createCircle(){
     setTimeout(() => {
         if(!gameOver){
             createCircle();
-        } else {
-            document.querySelectorAll('.circle').forEach(drop=>{
-                gamePlace.removeChild(drop)
-            })
-        }
+        } 
+            
+        
     }, createTime);
 }
 
@@ -137,12 +135,14 @@ function animate(circle, time){
             score -= 10;
             scoreBoard.innerHTML = score <= 0 ? 0 : score - 10;
             dropSound.play(); //звук падения капли
-            if(gameItaration >= 3) {gameOver = !gameOver}; // Если количество проигрышей больше
+            if(gameItaration >= 3) { // Если количество проигрышей больше 3 конец игры
+                gameOver = !gameOver;
+                document.querySelectorAll('.circle').forEach(drop => gamePlace.removeChild(drop))
+            }; 
           } catch {
               return;
-          }
-               
-        });         
+          }      
+    });         
 }
 
 //Определение операнд
