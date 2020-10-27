@@ -151,3 +151,20 @@
 .num {
   font-size: 2rem;
 }
+.fail--text{
+  position: absolute;
+  color: crimson;
+  font-weight: bold;
+  font-size: 5rem;
+  top: 40%;
+  left: 40%;
+  opacity: 0;
+}
+.open{
+  animation: fail 2s linear;
+}
+@keyframes fail{
+  0% {opacity: 0;}
+  50% {opacity: 1}
+  100% {opacity: 0}
+}
