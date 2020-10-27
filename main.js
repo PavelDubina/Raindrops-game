@@ -1,3 +1,5 @@
+const gameContainer = document.querySelector('.game--container');
+const fullButton = document.querySelector('.player--button')
 const gamePlace = document.querySelector('.game--place');
 const wave = document.querySelector('.wave');
 const displayValue = document.querySelector('.display--input');
@@ -16,18 +18,20 @@ let score = 0; //количество очков
 let scorePrice = 10;
 let animationTime = 8000;//длительность анимации падения
 let createTime = 4000; //время создания капель
-
+let gameOverCount = 3; //количество проигрышей для окончания игры
+let lvOperand = 10;
+let lvOperation = 0;
 
 
 //функция нажатия на клавишу Enter
 function useEnter(){
     const drop = document.querySelectorAll('.circle');
     if(!displayValue.value) return;
-            for(let one of drop){ 
-            if(eval(one.textContent) === +displayValue.value){
+            for(let one of drop){
+                 if(eval(one.textContent) === +displayValue.value){
                 rightSound.currentTime = 0;
                 rightSound.play();
-                score += scorePrice = scorePrice<10?10:scorePrice; 
+                score += scorePrice = scorePrice < 10 ? 10 : scorePrice; 
                 scorePrice++;
                 gamePlace.removeChild(one); 
                 break;  
@@ -35,13 +39,13 @@ function useEnter(){
                 if(one !== drop[drop.length-1]) continue; //Если ответ не совпадает ни с одной каплей => ошибка
                     failSound.currentTime = 0;
                     failSound.play();
-                    failBoarder.innerHTML = -(--scorePrice<10?10:scorePrice);
+                    failBoarder.innerHTML = -(--scorePrice < 10 ? 10 : scorePrice);
                     failBoarder.classList.add('open');
-                    setTimeout(() => {
+                    setTimeout(() => {                          ///появление уведомления о неправильном ответе
                             failBoarder.classList.remove('open');
                     }, 500);
                     score = score <= 0 ? 0 : score - scorePrice;                  
-        }
+            } 
     }
         displayValue.value = '';
         scoreBoard.textContent = score;
@@ -55,6 +59,7 @@ function activateButtons(e){
         }
     });
 }
+
 //Передача значение на дисплей и сравнение с каплями
 function updateDisplay(e){
     if(displayValue.value.length < 3 && e.target.dataset.num) {
@@ -69,7 +74,6 @@ function updateDisplay(e){
         useEnter();
     }  
 }
-
 
 //Передача значения на дисплей с клавиатуры и сравнение с другими каплями
 function updateDisplayWithKeyboard(e){
@@ -86,15 +90,13 @@ function updateDisplayWithKeyboard(e){
         useEnter(); 
         break;
         default: 
-        if(displayValue.value.length < 3) {
-            displayValue.value += e.key
-        } 
+        if(displayValue.value.length < 3) displayValue.value += e.key;     
     }
     activateButtons(e);
 }
 
 //Создание капель
-function createCircle(){
+function createDrop(){
     const circle = document.createElement('div');
     const firstOperand = document.createElement('span');
     const secondOperand = document.createElement('span');
@@ -103,15 +105,16 @@ function createCircle(){
     operation.className = 'operation';
     circle.style.left = randomPosition();
     circle.append(firstOperand, operation, secondOperand);
-    innerCircle(secondOperand, operation, firstOperand);
+    innerCircle(firstOperand, operation, secondOperand);
     gamePlace.append(circle);
-    animate(circle, 10000); // Добавление анимации
+    animate(circle, animationTime); // Добавление анимации
     setTimeout(() => {
-        if(!gameOver){
-            createCircle();
-        } 
-            
-        
+        if(gameOver) return;
+        createDrop(); 
+        createTime -= 50;
+        lvOperand++;
+        animationTime -= 20;                        ////Увеличение сложности игры
+        lvOperation = score>50?1:score>200?2:score>400?3:0;  
     }, createTime);
 }
 
@@ -119,10 +122,12 @@ function createCircle(){
 function randomPosition(min = 0, max = 85){
     return Math.floor(Math.random() * (max - min) + min) + '%';
 }
+
 //Определение высоты воды
 function findHeightWave(){
     return gamePlace.offsetHeight - wave.offsetHeight;
 }
+
 //Добавление анимации капле с динамической высотой и удаление после окончания анимации
 function animate(circle, time){
     circle.animate([ { top: 0 },
@@ -135,7 +140,7 @@ function animate(circle, time){
             wave.style.height = `${wave.offsetHeight + 20}px`//!!!! вопрос
             scoreBoard.innerHTML = score = (score - scorePrice)<= 0 ? 0 : score - (--scorePrice);
             dropSound.play(); //звук падения капли
-            if(gameItaration >= 3) { // Если количество проигрышей больше 3 конец игры
+            if(gameItaration >= gameOverCount) { // Если количество проигрышей больше 3 конец игры
                 gameOver = !gameOver;
                 document.querySelectorAll('.circle').forEach(drop => gamePlace.removeChild(drop))
             }; 
@@ -155,28 +160,27 @@ function operationRandom(min = 0, max = 3){
 
 //Наполнение капли значениями
 function innerCircle(fO, op, sO){
-    const first = operandRandom(0,10);
-    const second = operandRandom(0,10);
-    const oper = operationRandom(0,1);
-    if(first > second) return innerCircle(fO, op, sO);
+    const oper = operationRandom(0,lvOperation);
+    const first = operandRandom(0,lvOperand);
+    const second = operandRandom(0,lvOperand);
+    if(first < second || first%second !== 0 || first/second === 0 || first === second) return innerCircle(fO, op, sO);
     fO.innerHTML = first;
     sO.innerHTML = second;
     op.innerHTML = oper; 
+    // oper==='/'?'÷':oper==='*'?'×':oper
 }
- 
-
-
-
-
-  createCircle();
-
-
-
+ //На весь экран
+function fullScreen(){
+    gameContainer.classList.toggle('full-screen');
+    gamePlace.classList.toggle('full--game--place');
+}
 
 
  buttonPad.addEventListener('click', updateDisplay);
  window.addEventListener('keydown', updateDisplayWithKeyboard);
- window.addEventListener('keyup', activateButtons)
+ window.addEventListener('keyup', activateButtons);
+ fullButton.addEventListener('click', fullScreen)
+ createDrop();
 //  mainAudio.play();
  
 
