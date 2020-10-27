@@ -132,8 +132,7 @@ function animate(circle, time){
             gamePlace.removeChild(circle);
             gameItaration++;
             wave.style.height = `${wave.offsetHeight + 20}px`//!!!! вопрос
-            score -= 10;
-            scoreBoard.innerHTML = score <= 0 ? 0 : score - 10;
+            scoreBoard.innerHTML = score = (score - scorePrice)<= 0 ? 0 : score - (--scorePrice);
             dropSound.play(); //звук падения капли
             if(gameItaration >= 3) { // Если количество проигрышей больше 3 конец игры
                 gameOver = !gameOver;
