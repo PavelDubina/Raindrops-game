@@ -70,6 +70,7 @@ function updateDisplay(e){
     }  
 }
 
+
 //Передача значения на дисплей с клавиатуры и сравнение с другими каплями
 function updateDisplayWithKeyboard(e){
     if(e.location !== 3 ) return; // Проверяем действительно ли нажата кнопка поля numpad
