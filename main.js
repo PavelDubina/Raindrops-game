@@ -1,4 +1,3 @@
-const t0 = performance.now();
 const gameContainer = document.querySelector('.game--container');
 const fullButton = document.querySelector('.player--button')
 const gamePlace = document.querySelector('.game--place');
@@ -11,7 +10,12 @@ const mainAudio = document.querySelector('.main--theme');
 const dropSound = document.querySelector('.drop--sound');
 const rightSound = document.querySelector('.right--sound');
 const failSound = document.querySelector('.fail--sound');
-const failBoarder =document.querySelector('.fail--text');
+const failBoarder = document.querySelector('.fail--text');
+const statsBoard = document.querySelector('.game--stats');
+const scorePoins = document.querySelector('.score--point');
+const accuracyPoint = document.querySelector('.accuracy');
+const solvePoint = document.querySelector('.solve');
+const perMinutePoint = document.querySelector('.per--minute')
 const opArr = ['+','-','*','/'];
 let gameOver = false;
 let gameItaration = 0; // Количество проигрышей
@@ -23,7 +27,7 @@ let gameOverCount = 3; //количество проигрышей для око
 let lvOperand = 10; //Диапазон чисел
 let lvOperation = 0; // Значение знака операций
 let correctAnswers = 0; //Количество правильных ответов
-let inCorrectAnswers = 0; //количество неправильных ответов
+let countDrops = 0; //количество cозданных капель
 
 
 //функция нажатия на клавишу Enter
@@ -40,8 +44,7 @@ function useEnter(){
                 gamePlace.removeChild(one); 
                 break;  
             } else { 
-                if(one !== drop[drop.length-1]) continue;
-                    inCorrectAnswers++; //Если ответ не совпадает ни с одной каплей => ошибка
+                if(one !== drop[drop.length-1]) continue;   
                     failSound.currentTime = 0;
                     failSound.play();
                     failBoarder.innerHTML = -(--scorePrice < 10 ? 10 : scorePrice);
@@ -84,8 +87,8 @@ function updateDisplay(e){
 function updateDisplayWithKeyboard(e){
     if(e.location !== 3 ) return; // Проверяем действительно ли нажата кнопка поля numpad
     switch(e.key){
-        case '/': return;
-        case '*': return;
+        case '/': 
+        case '*':            ////исправить
         case '-': return;
         case '+': displayValue.value = '';
         break;
@@ -115,7 +118,8 @@ function createDrop(){
     animate(circle, animationTime); // Добавление анимации
     setTimeout(() => {
         if(gameOver) return;
-        createDrop(); 
+        createDrop();
+        countDrops++ 
         createTime -= 50;
         lvOperand++;
         animationTime -= 20;                        ////Увеличение сложности игры
@@ -145,7 +149,10 @@ function animate(circle, time){
             wave.style.height = `${wave.offsetHeight + 20}px`//!!!! вопрос
             scoreBoard.innerHTML = score = (score - scorePrice)<= 0 ? 0 : score - (--scorePrice);
             dropSound.play(); //звук падения капли
-            if(gameItaration >= gameOverCount) {            // Если количество проигрышей больше 3 конец игры
+            if(gameItaration >= gameOverCount) {    // Если количество проигрышей больше 3 конец игры
+                showGameOver();         //Показать окно конец игры  
+                 console.log(correctAnswers) 
+                 console.log(`${performance.now()/1000/60} minutes`);      
                 gameOver = !gameOver;
                 document.querySelectorAll('.circle').forEach(drop => gamePlace.removeChild(drop))
             }; 
@@ -154,12 +161,15 @@ function animate(circle, time){
           }      
     });         
 }
-
-function sa(){
-    console.log(`${Math.ceil(performance.now()/1000)} seconds`); //Определение длительности игры
-    console.log(correctAnswers)
-    console.log(inCorrectAnswers)
+// конец игры
+function showGameOver(){
+    statsBoard.classList.add('game--stats--visible');
+    scorePoins.innerHTML = score;
+    accuracyPoint.innerHTML = `${Math.ceil(correctAnswers*100/countDrops)}%`;
+    solvePoint.innerHTML = correctAnswers;
+    perMinutePoint.innerHTML = Math.round(correctAnswers/(performance.now()/1000/60))
 }
+
 //Определение операнд
 function operandRandom(min = 0, max = 100){
     return Math.round(min - 0.5 + Math.random() * (max - min + 1));
@@ -190,7 +200,7 @@ function fullScreen(){
  window.addEventListener('keydown', updateDisplayWithKeyboard);
  window.addEventListener('keyup', activateButtons);
  fullButton.addEventListener('click', fullScreen);
- createDrop();
+createDrop();
  
 // 
  
