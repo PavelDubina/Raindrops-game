@@ -1,7 +1,7 @@
 .container {
   max-width: 1024px;
   max-height: 860px;
-  height: 100vh;
+  height: 93vh;
   margin: 0 auto;
   background: linear-gradient(#ffffff, #caffff);
   text-align: center;
@@ -37,9 +37,8 @@
   width: 5%;
   top: 50%;
   left: 25%;
- 
 }
-.drop{
+.drop {
   opacity: 0.3;
 }
 .buttons {
@@ -78,17 +77,11 @@ form {
   max-height: 89vh;
   max-width: none;
 }
-/*Screen 768px*/
-@media (max-width: 768px) {
-}
+
 /*Screen 425px*/
 @media (max-width: 425px) {
   .container {
     height: 100vh;
-    margin: 0 auto;
-    background: linear-gradient(#ffffff, #caffff);
-    text-align: center;
-    position: relative;
   }
   .rain--text {
     font-size: 5rem;
@@ -98,10 +91,36 @@ form {
     width: 70%;
   }
 }
+@media (max-width: 414px) {
+  .container {
+    height: 82vh;
+  }
+  .buttons {
+    left: 10%;
+    width: 80%;
+  }
+  .rain--text {
+    margin: 30% 0;
+    font-size: 4rem;
+  }
+}
 @media (max-width: 375px) {
   .buttons {
     left: 12%;
     width: 75%;
+  }
+}
+@media (max-width: 360px) {
+  .container {
+    height: 82vh;
+  }
+  .buttons {
+    left: 10%;
+    width: 80%;
+  }
+  .rain--text {
+    margin: 30% 0;
+    font-size: 4rem;
   }
 }
 @media (max-width: 320px) {
@@ -112,5 +131,8 @@ form {
   .buttons {
     left: 5%;
     width: 90%;
+  }
+  .container {
+    height: 83vh;
   }
 }
