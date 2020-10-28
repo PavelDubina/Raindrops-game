@@ -1,0 +1,97 @@
+.container {
+  max-width: 1024px;
+  max-height: 860px;
+  height: 100vh;
+  margin: 0 auto;
+  background: linear-gradient(#ffffff, #caffff);
+  text-align: center;
+  position: relative;
+}
+.main--text {
+  width: 60%;
+  height: 40%;
+}
+.rain--text {
+  display: block;
+  text-transform: capitalize;
+  font-size: 10rem;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: rgb(116, 194, 194);
+  margin-top: 5%;
+  padding-bottom: 10%;
+}
+.other--text {
+  font-size: 2rem;
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.85);
+}
+.first--drop {
+  position: absolute;
+  width: 20%;
+  height: 30%;
+  top: 50%;
+  left: 45%;
+}
+.second--drop {
+  position: absolute;
+  width: 5%;
+  top: 50%;
+  left: 25%;
+}
+.buttons {
+  position: absolute;
+  bottom: 10%;
+  left: 30%;
+  display: flex;
+  width: 40%;
+}
+form {
+  flex: 1;
+  margin: 0 2%;
+}
+button {
+  width: 100%;
+  background: linear-gradient(#ffffff, #caffff);
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 1.2rem;
+  padding: 5%;
+  border-radius: 20px;
+  outline: none;
+}
+/*Screen 768px*/
+@media (max-width: 768px) {
+}
+/*Screen 425px*/
+@media (max-width: 425px) {
+  .container {
+    height: 100vh;
+    margin: 0 auto;
+    background: linear-gradient(#ffffff, #caffff);
+    text-align: center;
+    position: relative;
+  }
+  .rain--text {
+    font-size: 5rem;
+  }
+  .buttons {
+    left: 15%;
+    width: 70%;
+  }
+}
+@media (max-width: 375px) {
+  .buttons {
+    left: 12%;
+    width: 75%;
+  }
+}
+@media (max-width: 320px) {
+  .rain--text {
+    margin: 30% 0;
+    font-size: 3rem;
+  }
+  .buttons {
+    left: 5%;
+    width: 90%;
+  }
+}
