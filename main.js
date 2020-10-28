@@ -1,3 +1,4 @@
+const t0 = performance.now();
 const gameContainer = document.querySelector('.game--container');
 const fullButton = document.querySelector('.player--button')
 const gamePlace = document.querySelector('.game--place');
@@ -19,8 +20,10 @@ let scorePrice = 10;
 let animationTime = 8000;//длительность анимации падения
 let createTime = 4000; //время создания капель
 let gameOverCount = 3; //количество проигрышей для окончания игры
-let lvOperand = 10;
-let lvOperation = 0;
+let lvOperand = 10; //Диапазон чисел
+let lvOperation = 0; // Значение знака операций
+let correctAnswers = 0; //Количество правильных ответов
+let inCorrectAnswers = 0; //количество неправильных ответов
 
 
 //функция нажатия на клавишу Enter
@@ -29,6 +32,7 @@ function useEnter(){
     if(!displayValue.value) return;
             for(let one of drop){
                  if(eval(one.textContent) === +displayValue.value){
+                correctAnswers++;
                 rightSound.currentTime = 0;
                 rightSound.play();
                 score += scorePrice = scorePrice < 10 ? 10 : scorePrice; 
@@ -36,7 +40,8 @@ function useEnter(){
                 gamePlace.removeChild(one); 
                 break;  
             } else { 
-                if(one !== drop[drop.length-1]) continue; //Если ответ не совпадает ни с одной каплей => ошибка
+                if(one !== drop[drop.length-1]) continue;
+                    inCorrectAnswers++; //Если ответ не совпадает ни с одной каплей => ошибка
                     failSound.currentTime = 0;
                     failSound.play();
                     failBoarder.innerHTML = -(--scorePrice < 10 ? 10 : scorePrice);
@@ -114,7 +119,7 @@ function createDrop(){
         createTime -= 50;
         lvOperand++;
         animationTime -= 20;                        ////Увеличение сложности игры
-        lvOperation = score>50?1:score>200?2:score>400?3:0;  
+        lvOperation = score>400?3:score>200?2:score>50?1:0;  
     }, createTime);
 }
 
@@ -140,7 +145,7 @@ function animate(circle, time){
             wave.style.height = `${wave.offsetHeight + 20}px`//!!!! вопрос
             scoreBoard.innerHTML = score = (score - scorePrice)<= 0 ? 0 : score - (--scorePrice);
             dropSound.play(); //звук падения капли
-            if(gameItaration >= gameOverCount) { // Если количество проигрышей больше 3 конец игры
+            if(gameItaration >= gameOverCount) {            // Если количество проигрышей больше 3 конец игры
                 gameOver = !gameOver;
                 document.querySelectorAll('.circle').forEach(drop => gamePlace.removeChild(drop))
             }; 
@@ -150,12 +155,17 @@ function animate(circle, time){
     });         
 }
 
+function sa(){
+    console.log(`${Math.ceil(performance.now()/1000)} seconds`); //Определение длительности игры
+    console.log(correctAnswers)
+    console.log(inCorrectAnswers)
+}
 //Определение операнд
 function operandRandom(min = 0, max = 100){
-    return Math.round(Math.random() * (max - min) + min);
+    return Math.round(min - 0.5 + Math.random() * (max - min + 1));
 }
 function operationRandom(min = 0, max = 3){
-    return opArr[Math.round(Math.random() * (max - min) + min)];
+    return opArr[Math.floor(min + Math.random() * (max + 1 - min))];
 }
 
 //Наполнение капли значениями
@@ -163,7 +173,7 @@ function innerCircle(fO, op, sO){
     const oper = operationRandom(0,lvOperation);
     const first = operandRandom(0,lvOperand);
     const second = operandRandom(0,lvOperand);
-    if(first < second || first%second !== 0 || first/second === 0 || first === second) return innerCircle(fO, op, sO);
+    if(first < second || first%second !== 0 || first/second === 0 || first === second || (oper === '*' && second > 10)) return innerCircle(fO, op, sO);
     fO.innerHTML = first;
     sO.innerHTML = second;
     op.innerHTML = oper; 
@@ -179,9 +189,10 @@ function fullScreen(){
  buttonPad.addEventListener('click', updateDisplay);
  window.addEventListener('keydown', updateDisplayWithKeyboard);
  window.addEventListener('keyup', activateButtons);
- fullButton.addEventListener('click', fullScreen)
+ fullButton.addEventListener('click', fullScreen);
  createDrop();
-//  mainAudio.play();
+ 
+// 
  
 
 
