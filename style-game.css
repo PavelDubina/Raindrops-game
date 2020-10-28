@@ -232,7 +232,7 @@ form{
     opacity: 0;
   }
 }
-.player--button {
+.full--button {
   position: absolute;
   bottom: 0;
   right: 0;
