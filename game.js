@@ -15,7 +15,8 @@ const statsBoard = document.querySelector('.game--stats');
 const scorePoins = document.querySelector('.score--point');
 const accuracyPoint = document.querySelector('.accuracy');
 const solvePoint = document.querySelector('.solve');
-const perMinutePoint = document.querySelector('.per--minute')
+const perMinutePoint = document.querySelector('.per--minute');
+const soundButton = document.querySelector('.sound--button');
 const opArr = ['+','-','*','/'];
 let gameOver = false;
 let gameItaration = 0; // Количество проигрышей
@@ -28,6 +29,7 @@ let lvOperand = 10; //Диапазон чисел
 let lvOperation = 0; // Значение знака операций
 let correctAnswers = 0; //Количество правильных ответов
 let countDrops = 0; //количество cозданных капель
+
 
 if(localStorage.getItem('full')) {
     gameContainer.classList.add('full-screen');
@@ -153,9 +155,7 @@ function animate(circle, time){
             scoreBoard.innerHTML = score = (score - scorePrice)<= 0 ? 0 : score - (--scorePrice);
             dropSound.play(); //звук падения капли
             if(gameItaration >= gameOverCount) {    // Если количество проигрышей больше 3 конец игры
-                showGameOver();         //Показать окно конец игры  
-                 console.log(correctAnswers) 
-                 console.log(`${performance.now()/1000/60} minutes`);      
+                showGameOver();         //Показать окно конец игры       
                 gameOver = !gameOver;
                 document.querySelectorAll('.circle').forEach(drop => gamePlace.removeChild(drop))
             }; 
@@ -203,6 +203,14 @@ function fullScreen(){
  window.addEventListener('keydown', updateDisplayWithKeyboard);
  window.addEventListener('keyup', activateButtons);
  fullButton.addEventListener('click', fullScreen);
+ window.addEventListener('load', ()=> {
+    soundButton.click();
+})
+ soundButton.addEventListener('click', () => {
+    if(mainAudio.paused) {
+        mainAudio.play();
+    } else mainAudio.pause();
+ })
 createDrop();
  
 // 
