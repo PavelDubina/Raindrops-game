@@ -205,8 +205,8 @@ body{
 }
 .reload--game{
   margin: 5% 0;
-  width: 50%;
-  height: 10%;
+  height: 100%;
+  width: 100%;
   outline: none;
   border-radius: 1rem;
   border: 1px solid white;
@@ -216,6 +216,10 @@ body{
 }
 .reload--game:active{
   box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+form{
+  width: 30%;
+  padding: 1% 0;
 }
 @keyframes fail {
   0% {
