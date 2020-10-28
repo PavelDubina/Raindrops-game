@@ -8,6 +8,15 @@
     <title>Raindrops</title>
 </head>
 <body>
+    <div class="game--stats">
+        <p class="head">speed</p>
+        <p class="description">equations per minute:&#160<span class="point per--minute">0</span></p>
+        <p class="description">total equations solved:&#160<span class="point solve">0</span></p>
+        <p class="head">accuracy</p>
+        <p class="description">overall:&#160<span class="accuracy point">0</span></p>
+        <p class="score--text"><span class="score--point">0</span>&#160points</p>
+        <button class="reload--game">continue</button>
+    </div>
     <div class="game--container">
         <div class="game--place">
             <span class="fail--text"></span> 
@@ -49,7 +58,7 @@
             <button class="player--button over-size">⛶</button>
         </div>
     </div>
-    <audio autoplay loop class="main--theme" src="./sounds/rain.mp3"></audio>
+    <audio loop class="main--theme" src="./sounds/rain.mp3"></audio>
     <audio class="drop--sound" src="./sounds/drop.mp3"></audio>
     <audio class="right--sound" src="./sounds/right.mp3"></audio>
     <audio class="fail--sound" src="./sounds/fail.mp3"></audio>
