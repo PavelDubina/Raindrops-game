@@ -232,10 +232,9 @@ form{
     opacity: 0;
   }
 }
-.full--button {
+.but{
   position: absolute;
   bottom: 0;
-  right: 0;
   outline: none;
   border: none;
   background: white;
@@ -249,6 +248,16 @@ form{
 }
 .full--game--place{
   flex: 4;
+}
+.full--button{
+  right: 0;
+}
+.sound--button{
+  left: 0;
+  border-radius: 50%;
+}
+.sound--button:active{
+  box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
 }
 
 /*Screen 768px*/
