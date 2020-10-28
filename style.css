@@ -1,9 +1,10 @@
-.body {
+body{
   box-sizing: border-box;
 }
 /*main page*/
 .game--container {
   display: flex;
+  position: relative;
   max-width: 1024px;
   max-height: 860px;
   height: 100vh;
@@ -161,6 +162,60 @@
 }
 .open {
   animation: fail 2s linear;
+}
+.game--stats{
+  position: absolute;
+  top: 25%;
+  left: 35%;
+  width: 30%;
+  height: 35%;
+  background: rgb(228, 237, 240);
+  border-radius: 5%;
+  text-transform: capitalize;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  z-index: 5;
+  font-size: 18px;
+  transform: translateY(-100vh);
+  align-items: center;
+}
+.game--stats--visible{
+  transition: transform 2s linear;
+  transform: translateY(0)
+}
+.head{
+  margin-bottom: 0;
+  font-weight: bold;
+  font-size: 1.5rem;
+}
+.point{
+  color: rgb(0, 183, 255);
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+.score--text{
+  margin: 0;
+  color: red;
+  font-weight: bold;
+  font-size: 2rem;
+}
+.description{
+  margin: 0.5rem;
+}
+.reload--game{
+  margin: 5% 0;
+  width: 50%;
+  height: 10%;
+  outline: none;
+  border-radius: 1rem;
+  border: 1px solid white;
+  background: rgba(255, 255, 187, 0.76);
+  text-transform: capitalize;
+  font-weight: bold;
+}
+.reload--game:active{
+  box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
 }
 @keyframes fail {
   0% {
