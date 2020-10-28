@@ -31,10 +31,6 @@ let correctAnswers = 0;                                                         
 let countDrops = 0;                                                                     // начальное количество cозданных капель
 
 
-if(localStorage.getItem('full')) {                                                      // проверяем была ли нажата кнопка "во весь экран" в главном меню
-    gameContainer.classList.add('full-screen');
-    gamePlace.classList.add('full--game--place');
-}
 
 function useEnter(){                                                                    // функция нажатия на клавишу Enter
     const drop = document.querySelectorAll('.circle');
@@ -203,9 +199,16 @@ function fullScreen(){                                                          
  buttonPad.addEventListener('click', updateDisplay);                                                            // обработчик события на поле с клавишами (делегирование)
  window.addEventListener('keydown', updateDisplayWithKeyboard);                                                 // обработчик события нажатия на клавиши клавиатуры
  window.addEventListener('keyup', activateButtons);                                                             // обработчик события поднятия клавиши клавиатуры
- fullButton.addEventListener('click', fullScreen);                                                              // искусственный клик на кнопку фоновой музыки при загрузке страницы 
- window.addEventListener('load', ()=> {
+ fullButton.addEventListener('click', fullScreen);                                                              
+ window.addEventListener('load', ()=> {                                                                         // искусственный клик на кнопку фоновой музыки при загрузке страницы 
     soundButton.click();
+    if(localStorage.getItem('full') === 'true') {                                                               // проверяем была ли нажата кнопка "во весь экран" в главном меню
+    gameContainer.classList.add('full-screen');
+    gamePlace.classList.add('full--game--place');
+} else {
+    gameContainer.classList.remove('full-screen');
+    gamePlace.classList.remove('full--game--place');
+}
 })
  soundButton.addEventListener('click', () => {                                                                  //обработчик события нажатия на клавишу фоновой музыки
     if(mainAudio.paused) {
