@@ -1,1 +1,1 @@
-https://paveldubina.github.io/Raindrops-game/
+https://paveldubina.github.io/Raindrops-game/main-index.html
