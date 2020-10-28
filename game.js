@@ -1,5 +1,5 @@
 const gameContainer = document.querySelector('.game--container');
-const fullButton = document.querySelector('.player--button')
+const fullButton = document.querySelector('.full--button')
 const gamePlace = document.querySelector('.game--place');
 const wave = document.querySelector('.wave');
 const displayValue = document.querySelector('.display--input');
@@ -29,7 +29,10 @@ let lvOperation = 0; // Значение знака операций
 let correctAnswers = 0; //Количество правильных ответов
 let countDrops = 0; //количество cозданных капель
 
-
+if(localStorage.getItem('full')) {
+    gameContainer.classList.add('full-screen');
+    gamePlace.classList.add('full--game--place');
+}
 //функция нажатия на клавишу Enter
 function useEnter(){
     const drop = document.querySelectorAll('.circle');
