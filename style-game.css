@@ -230,6 +230,15 @@ form {
   padding: 3% 0;
   margin-bottom: 10px;
 }
+.spray{
+  position: absolute;
+  z-index: 10;
+  animation: drop 1s ease;
+}
+@keyframes drop {
+  0% {}
+  100% {transform: scale(10) rotate(45deg) ;opacity: 0; }  
+}
 @keyframes fail {
   0% {
     opacity: 0;
