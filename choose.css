@@ -1,0 +1,61 @@
+.container {
+  max-width: 1024px;
+  max-height: 860px;
+  height: 93vh;
+  margin: 0 auto;
+  background: linear-gradient(#ffffff, #caffff);
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.inputs {
+  height: 50%;
+  width: 80%;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(255, 254, 234, 1) 0%,
+    rgba(255, 254, 234, 1) 35%,
+    #b7e8eb 100%
+  );
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+.part {
+  margin: 10px;
+}
+.skip {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+}
+.play {
+    position: absolute;
+    bottom: 80px;
+    right: 30px; 
+}
+p {
+  font-size: 18px;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", "Lucida Grande",
+    "Lucida Sans", Arial, sans-serif;
+}
+.button {
+  width: 60px;
+  height: 30px;
+  background: linear-gradient(#ffffff, #caffff);
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+.text {
+  height: 30px;
+  font-size: 18px;
+}
+.full-screen {
+    width: 100%;
+    max-height: 100vh;
+    max-width: none;
+  }
