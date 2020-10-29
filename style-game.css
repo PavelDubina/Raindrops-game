@@ -282,7 +282,6 @@ form {
 }
 .sound--button {
   left: 0;
-  border-radius: 50%;
 }
 .sound--button:active {
   box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
