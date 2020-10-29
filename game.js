@@ -22,8 +22,8 @@ let gameOver = false;                                                           
 let gameItaration = 0;                                                                  // начальное количество капель, попавших в воду (будет увеличиваться и влиять на флаг gameOver)
 let score = 0;                                                                          // начальное количество очков Score                                          
 let scorePrice = 10;                                                                    // количество начисляемых очков за первый правильный ответ (за каждый последующий правильный будет увеличиваться, а за не правильный уменьшаться)
-let animationTime = 8000;                                                               // начальная длительность анимации падения (будет уменьшаться, усложняя игру)
-let createTime = 4000;                                                                  // начальное время создания капель (будет уменьшаться, усложняя игру)
+let animationTime = 9000;                                                               // начальная длительность анимации падения (будет уменьшаться, усложняя игру)
+let createTime = 5000;                                                                  // начальное время создания капель (будет уменьшаться, усложняя игру)
 let gameOverCount = 3;                                                                  // количество попаданий капель в воду для окончания игры
 let lvOperand = 10;                                                                     // начальный диапазон операнд (будет увеличиваться, усложняя игру)
 let lvOperation = 0;                                                                    // начальный индекс массива операторов (будет увеличиваться до 3, добавляя новые операторы и усложняя игру)
@@ -48,12 +48,12 @@ function useEnter(){                                                            
                 if(one !== drop[drop.length-1]) continue;                               // если ответ неправильный, то проверяем чтобы среди всех капель на игровом поле небыло правильного выражения внутри
                     failSound.currentTime = 0;
                     failSound.play();                                                   // сбрасываем на начало звук неправильного ответа и включаем его
-                    failBoarder.innerHTML = -(--scorePrice < 10 ? 10 : scorePrice);     // отображаем в всплывающем окне количество отнятых очков от Score
+                    failBoarder.innerHTML = -(scorePrice < 10 ? 10 : scorePrice);       // отображаем в всплывающем окне количество отнятых очков от Score
                     failBoarder.classList.add('open');                                  // добавляем этому окну класс показывающий его
                     setTimeout(() => {                                                  // через указанное время удаляем и возвращаем этому окну opacity 0
                             failBoarder.classList.remove('open');
                     }, 500);
-                    score = score <= 0 ? 0 : score - scorePrice;                        // отнимаем от Score текущее значение ScorePrice
+                    score = score - scorePrice <= 0 ? 0 : score - scorePrice;           // отнимаем от Score текущее значение ScorePrice
             } 
     }
         displayValue.value = '';                                                        // обнуляем дисплей
@@ -121,9 +121,9 @@ function createDrop(){                                                          
         if(gameOver) return;                                                                    // если флаг gameOver true прекращаем создание капель
         createDrop();                                                                           // если флаг false вызываем ту же функцию
         countDrops++                                                                            // увеличиваем количество созданных капель
-        createTime -= 50;                                                                       // уменьшаем время создания капель
+        createTime = createTime<1020?1000:createTime-20;                                                                       // уменьшаем время создания капель
         lvOperand++;                                                                            // увеличиваем диапазон используемых операнд
-        animationTime -= 20;                                                                    // уменьшаем время падения капли
+        animationTime -= 30;                                                                    // уменьшаем время падения капли
         lvOperation = score>400?3:score>200?2:score>50?1:0;                                     // увеличиваем индекс массива операторов. добавляя новые, основываясь на количестве очков в Score
     }, createTime);
 }
@@ -148,7 +148,6 @@ function animate(circle, time){                                                 
             gamePlace.removeChild(circle);                                                                      // после окончания анимации, а именно падения капли в воду, удаляем её
             gameItaration++;                                                                                    // увеличиваем количество капель, упавших в воду
             wave.style.height = `${wave.offsetHeight + 20}px`                                                   // повышаем уровень воды
-            scoreBoard.innerHTML = score = (score - scorePrice)<= 0 ? 0 : score - (--scorePrice);               // переопределяем Score т.к. падение капли в воду отнимает количество scorePrice
             dropSound.play();                                                                                   // включаем звук падения капли
             if(gameItaration >= gameOverCount) {                                                                // сравниваем количество попаданий капель в воду необходимых для окончания игры и количество капель, попавших в воду
                 showGameOver();                                                                                 // если игра закончена появляется окно статистики        
@@ -183,7 +182,7 @@ function innerCircle(fO, op, sO){                                               
     const oper = operationRandom(0,lvOperation);
     const first = operandRandom(0,lvOperand);
     const second = operandRandom(0,lvOperand);
-    if(first < second || first%second !== 0 || first/second === 0 || first === second || (oper === '*' && second > 10)) return innerCircle(fO, op, sO); // проводим проверку на деление на ноль и ограничиваем сложность математических выражений
+    if((first < second && oper === '*') || (first < second && oper === '-') || (first%second !== 0 && oper === '/') || (first/second === 0 && oper === '/') || first === second || (oper === '*' && second > 10)) return innerCircle(fO, op, sO); // проводим проверку на деление на ноль и ограничиваем сложность математических выражений
     fO.innerHTML = first;
     sO.innerHTML = second;
     op.innerHTML = oper; 
@@ -215,7 +214,6 @@ function fullScreen(){                                                          
         mainAudio.play();
     } else mainAudio.pause();
  })
-
 createDrop();                                                                                                   // запуск
  
 
