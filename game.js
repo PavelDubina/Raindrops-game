@@ -17,7 +17,7 @@ const accuracyPoint = document.querySelector('.accuracy');                      
 const solvePoint = document.querySelector('.solve');                                    // значение количества правильных ответом в окне статистики
 const perMinutePoint = document.querySelector('.per--minute');                          // значение количества правильных ответов в минуту в окне статистики
 const soundButton = document.querySelector('.sound--button');                           // кнопка музыки
-const opArr = localStorage.getItem('operation')?[...localStorage.getItem('operation')]:['+','-','*','/'];                                                        // массив операторов
+const opArr = localStorage.getItem('operation')?[...localStorage.getItem('operation')]:['+','-','*','/'];         //проверяем localStorage и берем массив оттуда, если его нет, то используем по умолчанию             // массив операторов
 let gameOver = false;                                                                   // флаг показывающий окончена игра или нет
 let gameItaration = 0;                                                                  // начальное количество капель, попавших в воду (будет увеличиваться и влиять на флаг gameOver)
 let score = 0;                                                                          // начальное количество очков Score                                          
@@ -29,7 +29,7 @@ let lvOperand = 10;                                                             
 let lvOperation = localStorage.getItem('operation')?opArr.length-1:0;                   // начальный индекс массива операторов (будет увеличиваться до 3, добавляя новые операторы и усложняя игру)
 let correctAnswers = 0;                                                                 // начальное количество правильных ответов
 let countDrops = 0;                                                                     // начальное количество cозданных капель
-let operandRange = localStorage.getItem('first')?localStorage.getItem('first').split('-'):[0, lvOperand];
+
 
 
 
@@ -192,7 +192,12 @@ function showGameOver(){                                                        
 }
 
 
-function operandRandom(min = 0, max = 100){                                                                     // определение случайных операнд
+
+function firstOperandRandom(min = 0, max = 100){                                                                     // определение первого случайного операнда
+    return Math.round(min - 0.5 + Math.random() * (max - min + 1));
+    
+}
+function secondOperandRandom(min = 0, max = 100){                                                                     // определение случайных операнд 
     return Math.round(min - 0.5 + Math.random() * (max - min + 1));
     
 }
@@ -202,10 +207,14 @@ function operationRandom(min = 0, max = 3){                                     
 }
 
 
-function innerCircle(fO, op, sO){                                                                               // функция заполнения капли случайным содержимым
+function innerCircle(fO, op, sO){                                                                                                   // функция заполнения капли случайным содержимым
+    let firstOperandRange = localStorage.getItem('first')?localStorage.getItem('first').split('-'):[0, lvOperand];                  // проверяем есть ли значение в localStorage и если есть используем его, а если нет, игра запускается в обычном режиме с постепенным увеличением сложности
+    let secondOperandRange = localStorage.getItem('second')?localStorage.getItem('second').split('-'):[0, lvOperand];
+    if(secondOperandRange.length < 2) secondOperandRange = [`${secondOperandRange[0]}`,`${secondOperandRange[0]}`];                  // если переданный из localStorage массив содержит только один элемент, ограничиваем диапазон значений одним числом
+    if(firstOperandRange.length < 2) firstOperandRange = [`${firstOperandRange[0]}`,`${firstOperandRange[0]}`];
     const oper = operationRandom(0,lvOperation);
-    const first = operandRandom(...operandRange);
-    const second = operandRandom(...operandRange);
+    const first = firstOperandRandom(...firstOperandRange);
+    const second = secondOperandRandom(...secondOperandRange);
     if((first < second && oper === '*') || (first < second && oper === '-') || (first%second !== 0 && oper === '/') || (first/second === 0 && oper === '/') || first === second || (oper === '*' && second > 10)) return innerCircle(fO, op, sO); // проводим проверку на деление на ноль и ограничиваем сложность математических выражений
     fO.innerHTML = first;
     sO.innerHTML = second;
