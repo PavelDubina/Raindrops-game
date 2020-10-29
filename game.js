@@ -42,8 +42,9 @@ function createSpray(one){                                                      
 function useEnter(){                                                                    // функция нажатия на клавишу Enter
     const drop = document.querySelectorAll('.circle');
     if(!displayValue.value) return;                                                     // если дисплей пуст, ничего не происходит
-            for(let one of drop){                                                       
-                 if(eval(one.textContent) === +displayValue.value){                     // перебираем все капли, находящиеся в момент нажатия enter на игровом поле и сравниваем значение на дисплее с результатом выражения внутри капли
+            for(let one of drop){  
+                const ch = one.children;                                                // создаём переменную 'детей' капли          
+                 if(eval(`${ch[0].textContent}${ch[1].textContent==='÷'?'/':ch[1].textContent==='×'?'*':ch[1].textContent}${ch[2].textContent}`) === +displayValue.value){     // перебираем все капли, находящиеся в момент нажатия enter на игровом поле и сравниваем значение на дисплее с результатом выражения внутри капли и меняем значения оператора с красивого на читаемое Eval                       
                 correctAnswers++;                                                       
                 correctSound.currentTime = 0;                                           // сбрасываем на начало звук правильного ответа и включаем его
                 correctSound.play();
@@ -164,6 +165,7 @@ function animate(circle, time){                                                 
                 showGameOver();                                                                                 // если игра закончена появляется окно статистики        
                 gameOver = !gameOver;                                                                           // переключаем флаг gemeOver
                 document.querySelectorAll('.circle').forEach(drop => gamePlace.removeChild(drop))               // находим все капли на игровом поле в момент окончания игры и очищаем игровое поле
+                mainAudio.pause();                                                                              // останавливаем фоновую музыку
             }; 
           } catch {                                                                                             // если ошибка, выходим
               return;
@@ -196,7 +198,7 @@ function innerCircle(fO, op, sO){                                               
     if((first < second && oper === '*') || (first < second && oper === '-') || (first%second !== 0 && oper === '/') || (first/second === 0 && oper === '/') || first === second || (oper === '*' && second > 10)) return innerCircle(fO, op, sO); // проводим проверку на деление на ноль и ограничиваем сложность математических выражений
     fO.innerHTML = first;
     sO.innerHTML = second;
-    op.innerHTML = oper; 
+    op.innerHTML = oper==='/'?'÷':oper==='*'?'×':oper; 
 }
 
  
@@ -226,7 +228,7 @@ function fullScreen(){                                                          
     } else mainAudio.pause();
  })
 createDrop();                                                                                                   // запуск
- 
+
 
  
 
