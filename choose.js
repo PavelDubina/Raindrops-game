@@ -14,16 +14,21 @@ window.addEventListener('load', ()=> {
 }
 })
 
-firstInput.addEventListener('blur', () => {
-    localStorage.setItem('first', firstInput.value)
+firstInput.addEventListener('blur', () => {                                                                     // проверяем соответствует ли введенное значение установленным требованиям и если нет, то корректируем его
+    firstInput.value = firstInput.value.replace(/([^0-9\-])/g,'');
+    if(!/([\-])/g.test(firstInput.value) && +firstInput.value > 100) firstInput.value = 100;
+    localStorage.setItem('first', firstInput.value)                                                             // после чего записываем в локальную память
 })
 operationInput.addEventListener('blur', () => {
+    operationInput.value = operationInput.value.replace(/([^+\-/*])/g,'');
     localStorage.setItem('operation',operationInput.value)
 })
 secondInput.addEventListener('blur', () => {
+    secondInput.value = secondInput.value.replace(/([^0-9\-])/g,'');
+    if(!/([\-])/g.test(secondInput.value) && +secondInput.value > 100) secondInput.value = 100;
     localStorage.setItem('second',secondInput.value)
 })
-skip.addEventListener('click', ()=> {
+skip.addEventListener('click', ()=> {                                                                           // если нажимаем клавишу Skip игра запускается в режиме по умолчанию
     localStorage.removeItem('first' );
     localStorage.removeItem('operation');
     localStorage.removeItem('second');
