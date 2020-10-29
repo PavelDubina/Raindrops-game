@@ -7,7 +7,7 @@ body {
   position: relative;
   max-width: 1024px;
   max-height: 860px;
-  height: 100vh;
+  height: 98vh;
   margin: 0 auto;
 }
 .game--place {
@@ -285,6 +285,31 @@ form {
 }
 .sound--button:active {
   box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-height: 660px) {
+  .game--stats {
+    width: 30%;
+    left: 30%;
+  }
+  .head {
+    font-size: 1.2rem;
+  }
+  .point {
+    font-size: 0.8rem;
+  }
+  .score--text {
+    font-size: 1.2rem;
+  }
+  .description {
+    font-size: 0.9rem;
+    margin: 0.2rem;
+  }
+  form {
+    width: 30%;
+    padding: 0;
+    margin-bottom: 10px;
+  }
 }
 
 /*Screen 768px*/
