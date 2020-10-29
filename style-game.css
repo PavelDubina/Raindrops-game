@@ -1,4 +1,4 @@
-body{
+body {
   box-sizing: border-box;
 }
 /*main page*/
@@ -163,7 +163,7 @@ body{
 .open {
   animation: fail 2s linear;
 }
-.game--stats{
+.game--stats {
   position: absolute;
   top: 25%;
   left: 35%;
@@ -180,46 +180,55 @@ body{
   transform: translateY(-100vh);
   align-items: center;
 }
-.game--stats--visible{
+.game--stats--visible {
   transition: transform 2s linear;
-  transform: translateY(0)
+  transform: translateY(0);
 }
-.head{
+.head {
   margin-bottom: 0;
+  margin-top: 8px;
   font-weight: bold;
-  font-size: 1.5rem;
+  font-size: 1.8rem;
+  font-style: italic;
 }
-.point{
+.point {
   color: rgb(0, 183, 255);
   font-weight: bold;
   font-size: 1.3rem;
 }
-.score--text{
-  margin: 0;
+.score--text {
+  margin: 0px;
   color: red;
   font-weight: bold;
-  font-size: 2rem;
+  font-size: 1.5rem;
+  text-transform: lowercase;
 }
-.description{
-  margin: 0.5rem;
+.description {
+  margin: 0.4rem;
+  color: rgb(131, 99, 57);
+  font-weight: bold;
+  font-size: 1.3rem;
 }
-.reload--game{
-  margin: 5% 0;
+.reload--game {
+  margin-top: 5%;
   height: 100%;
   width: 100%;
+  padding: 3%;
   outline: none;
-  border-radius: 1rem;
-  border: 1px solid white;
+  border-radius: 10px;
+  border: 1px solid rgb(131, 99, 57);
   background: rgba(255, 255, 187, 0.76);
   text-transform: capitalize;
   font-weight: bold;
+  color: rgb(131, 99, 57);
 }
-.reload--game:active{
+.reload--game:active {
   box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
 }
-form{
+form {
   width: 30%;
-  padding: 1% 0;
+  padding: 3% 0;
+  margin-bottom: 10px;
 }
 @keyframes fail {
   0% {
@@ -232,7 +241,7 @@ form{
     opacity: 0;
   }
 }
-.but{
+.but {
   position: absolute;
   bottom: 0;
   outline: none;
@@ -246,17 +255,17 @@ form{
   max-height: 98vh;
   max-width: none;
 }
-.full--game--place{
+.full--game--place {
   flex: 4;
 }
-.full--button{
+.full--button {
   right: 0;
 }
-.sound--button{
+.sound--button {
   left: 0;
   border-radius: 50%;
 }
-.sound--button:active{
+.sound--button:active {
   box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
 }
 
@@ -277,6 +286,23 @@ form{
     position: absolute;
     left: 3px;
     top: 12px;
+  }
+  .game--stats {
+    width: 80%;
+    left: 10%;
+  }
+  .head {
+    font-size: 1.6rem;
+  }
+  .point {
+    font-size: 0.9rem;
+  }
+  .score--text {
+    font-size: 1.2rem;
+  }
+  .description {
+    font-size: 1.2rem;
+    margin: 0.4rem;
   }
 }
 /*Screen 425px*/
@@ -324,14 +350,47 @@ form{
   .display--input {
     font-size: 2.2rem;
   }
+  .description {
+    margin: 0.25rem;
+  }
 }
 @media (max-width: 360px) {
   .game--container {
     height: 97vh;
   }
+  .game--stats {
+    width: 80%;
+    left: 10%;
+  }
+  .head {
+    font-size: 1.2rem;
+  }
+  .point {
+    font-size: 1rem;
+  }
+  .score--text {
+    font-size: 1.2rem;
+  }
+  .description {
+    font-size: 1rem;
+    margin: 0.3rem;
+  }
 }
 @media (max-width: 320px) {
   .display--input {
     font-size: 1.8rem;
+  }
+  .head {
+    font-size: 1rem;
+  }
+  .point {
+    font-size: 0.9rem;
+  }
+  .score--text {
+    font-size: 1.2rem;
+  }
+  .description {
+    font-size: 0.8rem;
+    margin: 0.2rem;
   }
 }
