@@ -59,3 +59,69 @@ p {
     max-height: 100vh;
     max-width: none;
   }
+/*Screen 425px*/
+@media (max-width: 425px) {
+  .skip {
+    position: absolute;
+    bottom: 10px;
+    right: 100px;
+  }
+  .play {
+      position: absolute;
+      bottom: 10px;
+      left: 100px; 
+  }
+}
+@media (max-width: 414px) {
+  p {
+    font-size: 12px;
+  }
+  .skip {
+    right: 95px;
+  }
+  .play {
+      left: 95px; 
+  }
+}
+@media (max-width: 375px) {
+  p {
+    font-size: 15px;
+  }
+  .skip {
+    right: 80px;
+  }
+  .play {
+      left: 80px; 
+  }
+}
+@media (max-width: 375px), (max-height: 670px) {
+  p {
+    font-size: 11px;
+  }
+}
+@media (max-width: 375px), (max-height: 640px) {
+  p {
+    font-size: 11px;
+  }
+  .text {
+    height: 20px;
+    font-size: 16px;
+  }
+  .skip {
+    right: 75px;
+  }
+  .play {
+      left: 75px; 
+  }
+}
+@media (max-width: 320px) {
+  p {
+    margin-top: 0;
+  }
+  .skip {
+    right: 55px;
+  }
+  .play {
+      left: 55px; 
+  }
+}
