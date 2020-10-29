@@ -222,7 +222,7 @@ function fullScreen(){                                                          
     gamePlace.classList.toggle('full--game--place');
 }
 
-continueButton.addEventListener('click', () => {
+continueButton.addEventListener('click', () => {                                                                // сбрасываем значения записанные ранее в локальную память
     localStorage.removeItem('first' );
     localStorage.removeItem('operation');
     localStorage.removeItem('second');
