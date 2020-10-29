@@ -30,7 +30,14 @@ let lvOperation = 0;                                                            
 let correctAnswers = 0;                                                                 // начальное количество правильных ответов
 let countDrops = 0;                                                                     // начальное количество cозданных капель
 
-
+function createSpray(one){                                                              // создаём брызги
+    let img = new Image(8, 8);
+    img.src = 'untitled.svg';
+    img.className = 'spray';
+    img.style.left = `${one.offsetLeft + one.offsetWidth/2}px`;
+    img.style.top = `${one.offsetTop + one.offsetHeight/2}px`;
+    gamePlace.append(img); 
+}
 
 function useEnter(){                                                                    // функция нажатия на клавишу Enter
     const drop = document.querySelectorAll('.circle');
@@ -42,7 +49,11 @@ function useEnter(){                                                            
                 correctSound.play();
                 score += scorePrice = scorePrice < 10 ? 10 : scorePrice;                // добавляем к Score текущее значение ScorePrice
                 scorePrice++;                                                           // увеличиваем ScorePrice
+                createSpray(one);                                                                 
                 gamePlace.removeChild(one);                                             // удаляем с игрового поля решенную каплю
+               setTimeout(() => {                                                       // через время удаляем элемент с брызгами
+                gamePlace.removeChild(document.querySelector('.spray'));                
+               }, 1000);                          
                 break;  
             } else { 
                 if(one !== drop[drop.length-1]) continue;                               // если ответ неправильный, то проверяем чтобы среди всех капель на игровом поле небыло правильного выражения внутри
@@ -115,7 +126,7 @@ function createDrop(){                                                          
     circle.style.left = randomPosition();                                                       // добавляем случайную позицию появления капель
     circle.append(firstOperand, operation, secondOperand);                                      
     innerCircle(firstOperand, operation, secondOperand);                                        // заполняем каплю случайным содержимым и добавляем на игровое поле
-    gamePlace.append(circle);                                                                   
+    gamePlace.append(circle);                                                                 
     animate(circle, animationTime);                                                             // добавляем каждой капле анимацию падения
     setTimeout(() => {                                                                          // определяем повторение создания капель через определенное время
         if(gameOver) return;                                                                    // если флаг gameOver true прекращаем создание капель
