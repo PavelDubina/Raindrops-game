@@ -17,7 +17,7 @@ const accuracyPoint = document.querySelector('.accuracy');                      
 const solvePoint = document.querySelector('.solve');                                    // значение количества правильных ответом в окне статистики
 const perMinutePoint = document.querySelector('.per--minute');                          // значение количества правильных ответов в минуту в окне статистики
 const soundButton = document.querySelector('.sound--button');                           // кнопка музыки
-const opArr = ['+','-','*','/'];                                                        // массив операторов
+const opArr = localStorage.getItem('operation')?[...localStorage.getItem('operation')]:['+','-','*','/'];                                                        // массив операторов
 let gameOver = false;                                                                   // флаг показывающий окончена игра или нет
 let gameItaration = 0;                                                                  // начальное количество капель, попавших в воду (будет увеличиваться и влиять на флаг gameOver)
 let score = 0;                                                                          // начальное количество очков Score                                          
@@ -26,9 +26,18 @@ let animationTime = 9000;                                                       
 let createTime = 5000;                                                                  // начальное время создания капель (будет уменьшаться, усложняя игру)
 let gameOverCount = 3;                                                                  // количество попаданий капель в воду для окончания игры
 let lvOperand = 10;                                                                     // начальный диапазон операнд (будет увеличиваться, усложняя игру)
-let lvOperation = 0;                                                                    // начальный индекс массива операторов (будет увеличиваться до 3, добавляя новые операторы и усложняя игру)
+let lvOperation = localStorage.getItem('operation')?opArr.length-1:0;                   // начальный индекс массива операторов (будет увеличиваться до 3, добавляя новые операторы и усложняя игру)
 let correctAnswers = 0;                                                                 // начальное количество правильных ответов
 let countDrops = 0;                                                                     // начальное количество cозданных капель
+let operandRange = localStorage.getItem('first')?localStorage.getItem('first').split('-'):[0, lvOperand];
+
+
+
+
+console.log(opArr)
+
+
+
 
 function createSpray(one){                                                              // создаём брызги
     let img = new Image(8, 8);
@@ -136,6 +145,7 @@ function createDrop(){                                                          
         createTime = createTime<1020?1000:createTime-20;                                                                       // уменьшаем время создания капель
         lvOperand++;                                                                            // увеличиваем диапазон используемых операнд
         animationTime -= 30;                                                                    // уменьшаем время падения капли
+        if(localStorage.getItem('operation')) return;
         lvOperation = score>400?3:score>200?2:score>50?1:0;                                     // увеличиваем индекс массива операторов. добавляя новые, основываясь на количестве очков в Score
     }, createTime);
 }
@@ -184,6 +194,7 @@ function showGameOver(){                                                        
 
 function operandRandom(min = 0, max = 100){                                                                     // определение случайных операнд
     return Math.round(min - 0.5 + Math.random() * (max - min + 1));
+    
 }
 
 function operationRandom(min = 0, max = 3){                                                                     // определение случайного оператора
@@ -193,8 +204,8 @@ function operationRandom(min = 0, max = 3){                                     
 
 function innerCircle(fO, op, sO){                                                                               // функция заполнения капли случайным содержимым
     const oper = operationRandom(0,lvOperation);
-    const first = operandRandom(0,lvOperand);
-    const second = operandRandom(0,lvOperand);
+    const first = operandRandom(...operandRange);
+    const second = operandRandom(...operandRange);
     if((first < second && oper === '*') || (first < second && oper === '-') || (first%second !== 0 && oper === '/') || (first/second === 0 && oper === '/') || first === second || (oper === '*' && second > 10)) return innerCircle(fO, op, sO); // проводим проверку на деление на ноль и ограничиваем сложность математических выражений
     fO.innerHTML = first;
     sO.innerHTML = second;
