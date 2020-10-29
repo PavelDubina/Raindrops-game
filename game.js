@@ -1,3 +1,4 @@
+const continueButton = document.querySelector('.reload--game');                         // кнопка continue окна статистики              
 const gameContainer = document.querySelector('.game--container');                       // общее окно игры
 const fullButton = document.querySelector('.full--button')                              // кнопка увеличения размера экрана
 const gamePlace = document.querySelector('.game--place');                               // игровое окно
@@ -30,11 +31,6 @@ let lvOperation = localStorage.getItem('operation')?opArr.length-1:0;           
 let correctAnswers = 0;                                                                 // начальное количество правильных ответов
 let countDrops = 0;                                                                     // начальное количество cозданных капель
 
-
-
-
-
-console.log(opArr)
 
 
 
@@ -174,8 +170,7 @@ function animate(circle, time){                                                 
             if(gameItaration >= gameOverCount) {                                                                // сравниваем количество попаданий капель в воду необходимых для окончания игры и количество капель, попавших в воду
                 showGameOver();                                                                                 // если игра закончена появляется окно статистики        
                 gameOver = !gameOver;                                                                           // переключаем флаг gemeOver
-                document.querySelectorAll('.circle').forEach(drop => gamePlace.removeChild(drop))               // находим все капли на игровом поле в момент окончания игры и очищаем игровое поле
-                mainAudio.pause();                                                                              // останавливаем фоновую музыку
+                document.querySelectorAll('.circle').forEach(drop => gamePlace.removeChild(drop))               // находим все капли на игровом поле в момент окончания игры и очищаем игровое поле                                                                               
             }; 
           } catch {                                                                                             // если ошибка, выходим
               return;
@@ -227,7 +222,11 @@ function fullScreen(){                                                          
     gamePlace.classList.toggle('full--game--place');
 }
 
-
+continueButton.addEventListener('click', () => {
+    localStorage.removeItem('first' );
+    localStorage.removeItem('operation');
+    localStorage.removeItem('second');
+})
  buttonPad.addEventListener('click', updateDisplay);                                                            // обработчик события на поле с клавишами (делегирование)
  window.addEventListener('keydown', updateDisplayWithKeyboard);                                                 // обработчик события нажатия на клавиши клавиатуры
  window.addEventListener('keyup', activateButtons);                                                             // обработчик события поднятия клавиши клавиатуры
