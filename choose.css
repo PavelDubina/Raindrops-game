@@ -114,6 +114,26 @@ p {
       left: 75px; 
   }
 }
+@media (max-height: 430px) {
+  p {
+    font-size: 10px;
+    margin: 0 0 2px 0;
+  }
+  .text {
+    height: 15px;
+    font-size: 16px;
+  }
+  .skip {
+    right: 75px;
+  }
+  .play {
+      left: 75px; 
+  }
+  .button {
+    width: 55px;
+    height: 25px;
+  }
+}
 @media (max-width: 320px) {
   p {
     margin-top: 0;
