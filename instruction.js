@@ -13,7 +13,7 @@ function demonstration(){
     let createTime = 5000
     let countDrop = 0;
     let gameOverCount = 3;
-    console.log(buttons)
+    
     
     function createSpray(one){                                                              // создаём брызги
         let img = new Image(8, 8);
@@ -123,6 +123,11 @@ function demonstration(){
     function fullScreen(){                                                                                          // функция разворачивающая приложение во весь экран
         gameContainer.classList.toggle('full-screen');
         gamePlace.classList.toggle('full--game--place');
+        if(gameContainer.classList.contains('full-screen')){
+            localStorage.setItem('full', true)
+        } else {
+            localStorage.setItem('full', false)
+        }
     }
     
     
