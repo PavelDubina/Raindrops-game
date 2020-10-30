@@ -3,6 +3,7 @@ const gameContainer = document.querySelector('.game--container');               
 const fullButton = document.querySelector('.full--button')                              // кнопка увеличения размера экрана
 const gamePlace = document.querySelector('.game--place');                               // игровое окно
 const wave = document.querySelector('.wave');                                           // волна
+const wave2 = document.querySelector('.wave2');
 const displayValue = document.querySelector('.display--input');                         // дисплей
 const buttonPad = document.querySelector('.button-container');                          // контейнер со всеми клавишами 
 const buttons = document.querySelectorAll('.grid');                                     // все клавиши вместе
@@ -11,7 +12,7 @@ const mainAudio = document.querySelector('.main--theme');                       
 const dropSound = document.querySelector('.drop--sound');                               // звук падения капли в воду
 const correctSound = document.querySelector('.right--sound');                           // звук при правильном ответе
 const failSound = document.querySelector('.fail--sound');                               // звук при неправильном ответе
-const sunSound = document.querySelector('.sun--sound')
+const sunSound = document.querySelector('.sun--sound')                                  // звук при решении выражения в солнце
 const failBoarder = document.querySelector('.fail--text');                              // всплывающее уведомление об минусе очков при неправильном ответе
 const statsBoard = document.querySelector('.game--stats');                              // окно статистики
 const scorePoins = document.querySelector('.score--point');                             // значение Score в окне статистики
@@ -170,7 +171,7 @@ function createDrop(){                                                          
 }
 
 function createSun(){                                                                           // функция создания капель
-    if(gameOver) return;
+     if(gameOver) return;
     const circle = document.createElement('div');                                               // создаем элементы div
     const firstOperand = document.createElement('span');                                        
     const secondOperand = document.createElement('span');                                       // создаем элементы span
@@ -211,7 +212,8 @@ function animate(circle, time){                                                 
           try{                                                                                                  // .finished возвращает промис и используем .then и try-catch, т.к. если элемент удаляется, а анимация не закончилась, то в консоле било ошибку
             gamePlace.removeChild(circle);                                                                      // после окончания анимации, а именно падения капли в воду, удаляем её
             gameItaration++;                                                                                    // увеличиваем количество капель, упавших в воду
-            wave.style.height = `${wave.offsetHeight + 20}px`                                                   // повышаем уровень воды
+            wave.style.height = `${wave.offsetHeight + 20}px`
+            wave2.style.height = `${wave.offsetHeight + 20}px`                                                   // повышаем уровень воды
             dropSound.play();                                                                                   // включаем звук падения капли
             if(gameItaration >= gameOverCount) {                                                                // сравниваем количество попаданий капель в воду необходимых для окончания игры и количество капель, попавших в воду
                 showGameOver();                                                                                 // если игра закончена появляется окно статистики        

@@ -2,7 +2,8 @@ function demonstration(){
     const gameContainer = document.querySelector('.game--container');                       // общее окно игры
     const fullButton = document.querySelector('.full--button')                              // кнопка увеличения размера экрана
     const gamePlace = document.querySelector('.game--place');                               // игровое окно
-    const wave = document.querySelector('.wave');                                           // волна
+    const wave = document.querySelector('.wave'); 
+    const wave2 = document.querySelector('.wave2');                                          // волна
     const displayValue = document.querySelector('.display--input');                         // дисплей
     const buttonPad = document.querySelector('.button-container');                          // контейнер со всеми клавишами 
     const buttons = document.querySelectorAll('.grid');                                     // все клавиши вместе
@@ -94,7 +95,8 @@ function demonstration(){
               try{                                                                                                  // .finished возвращает промис и используем .then и try-catch, т.к. если элемент удаляется, а анимация не закончилась, то в консоле било ошибку
                 gamePlace.removeChild(circle);                                                                      // после окончания анимации, а именно падения капли в воду, удаляем её
                 gameItaration++;                                                                                    // увеличиваем количество капель, упавших в воду
-                wave.style.height = `${wave.offsetHeight + 20}px`                                                   // повышаем уровень воды
+                wave.style.height = `${wave.offsetHeight + 20}px`;
+                wave2.style.height = `${wave.offsetHeight + 20}px`                                                   // повышаем уровень воды
                 if(gameItaration >= gameOverCount) { 
                     failBoarder.innerHTML = 'Game Over';                                                            // отображаем в всплывающем окне сообщение Game Over
                     failBoarder.classList.add('open');  
