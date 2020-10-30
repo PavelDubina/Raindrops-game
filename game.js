@@ -170,6 +170,7 @@ function createDrop(){                                                          
 }
 
 function createSun(){                                                                           // функция создания капель
+    if(gameOver) return;
     const circle = document.createElement('div');                                               // создаем элементы div
     const firstOperand = document.createElement('span');                                        
     const secondOperand = document.createElement('span');                                       // создаем элементы span
@@ -256,7 +257,7 @@ function innerCircle(fO, op, sO){                                               
     const oper = operationRandom(0,lvOperation);
     const first = operandRandom(...firstOperandRange);
     const second = operandRandom(...secondOperandRange);
-    if((first < second && oper === '*') || (first < second && oper === '-') || (first%second !== 0 && oper === '/') || (first/second === 0 && oper === '/') || first === second || (oper === '*' && second > 10)) return innerCircle(fO, op, sO); // проводим проверку на деление на ноль и ограничиваем сложность математических выражений
+    if((first < second && oper === '*') || (first < second && oper === '-') || (first%second !== 0 && oper === '/') || (first/second === 0 && oper === '/') || (oper === '*' && second > 10)) return innerCircle(fO, op, sO); // проводим проверку на деление на ноль и ограничиваем сложность математических выражений
     fO.innerHTML = first;
     sO.innerHTML = second;
     op.innerHTML = oper==='/'?'÷':oper==='*'?'×':oper; 
