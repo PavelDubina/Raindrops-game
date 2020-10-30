@@ -269,9 +269,11 @@ function innerCircle(fO, op, sO){                                               
 function fullScreen(){                                                                                          // функция разворачивающая приложение во весь экран
     if(document.fullscreenElement){
         gameContainer.classList.remove('full-screen');
+        gamePlace.classList.remove('full--game--place');
         document.exitFullscreen()    
     } else{
         gameContainer.classList.add('full-screen');
+        gamePlace.classList.add('full--game--place');
         document.documentElement.requestFullscreen();
     } 
 }

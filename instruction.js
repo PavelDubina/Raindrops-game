@@ -125,10 +125,12 @@ function demonstration(){
     function fullScreen(){                                                                                          // функция разворачивающая приложение во весь экран
         if(document.fullscreenElement){
             gameContainer.classList.remove('full-screen');
+            gamePlace.classList.remove('full--game--place');
             document.exitFullscreen()    
         } else{
             gameContainer.classList.add('full-screen');
-            document.documentElement.requestFullscreen();
+            gamePlace.classList.add('full--game--place');
+            document.documentElement.requestFullscreen();   
         } 
         if(gameContainer.classList.contains('full-screen')){
             localStorage.setItem('full', true)
