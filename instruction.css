@@ -64,7 +64,7 @@ body {
   background: url(./img/wave.svg) repeat-x;
   position: absolute;
   bottom: 0;
-  width: 6400px;
+  width: 5120px;
   height: 18%;
   animation: wave 7s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
   transform: translate3d(0, 0, 0);
@@ -82,7 +82,7 @@ body {
     margin-left: 0;
   }
   100% {
-    margin-left: -1600px;
+    margin-left: -1280px;
   }
 }
 
