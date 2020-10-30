@@ -1,16 +1,32 @@
-const container = document.querySelector('.container'); 
+const fullButton = document.querySelector('.full--button')
+const gameContainer = document.querySelector('.container'); 
 const firstInput = document.querySelector('.first--input');
 const operationInput = document.querySelector('.operation--input');
 const secondInput = document.querySelector('.second--input');
 const play = document.querySelector('.play');
 const skip = document.querySelector('.skip');
 
+function fullScreen(){                                                                                          // функция разворачивающая приложение во весь экран
+    if(document.fullscreenElement){
+        gameContainer.classList.remove('full-screen');
+        document.exitFullscreen()    
+    } else{
+        gameContainer.classList.add('full-screen');
+        document.documentElement.requestFullscreen();
+    } 
+    if(gameContainer.classList.contains('full-screen')){
+        localStorage.setItem('full', true)
+    } else {
+        localStorage.setItem('full', false)
+    }
+}
+
 
 window.addEventListener('load', ()=> {                                                                        
     if(localStorage.getItem('full') === 'true') {                                                               // проверяем была ли нажата кнопка "во весь экран" в главном меню
-    container.classList.add('full-screen')
+    gameContainer.classList.add('full-screen')
 } else {
-    container.classList.remove('full-screen')
+    gameContainer.classList.remove('full-screen')
 }
 })
 
@@ -33,3 +49,5 @@ skip.addEventListener('click', ()=> {                                           
     localStorage.removeItem('operation');
     localStorage.removeItem('second');
 })
+
+fullButton.addEventListener('click', fullScreen);

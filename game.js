@@ -267,8 +267,13 @@ function innerCircle(fO, op, sO){                                               
 
  
 function fullScreen(){                                                                                          // функция разворачивающая приложение во весь экран
-    gameContainer.classList.toggle('full-screen');
-    gamePlace.classList.toggle('full--game--place');
+    if(document.fullscreenElement){
+        gameContainer.classList.remove('full-screen');
+        document.exitFullscreen()    
+    } else{
+        gameContainer.classList.add('full-screen');
+        document.documentElement.requestFullscreen();
+    } 
 }
 
 continueButton.addEventListener('click', () => {                                                                // сбрасываем значения записанные ранее в локальную память

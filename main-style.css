@@ -1,7 +1,10 @@
+body{
+  margin: 0;
+}
 .container {
   max-width: 1024px;
   max-height: 860px;
-  height: 90vh;
+  height: 100vh;
   margin: 0 auto;
   background: linear-gradient(#ffffff, #caffff);
   text-align: center;
@@ -14,10 +17,9 @@
 .rain--text {
   display: block;
   text-transform: capitalize;
-  font-size: 10rem;
+  font-size: 20vw;
   font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
   color: rgb(116, 194, 194);
-  margin-top: 5%;
   padding-bottom: 10%;
 }
 .other--text {
@@ -43,7 +45,7 @@
 }
 .buttons {
   position: absolute;
-  bottom: 100px;
+  bottom: 15vh;
   left: 30%;
   display: flex;
   width: 40%;
@@ -74,34 +76,25 @@ form {
 }
 .full-screen {
   width: 100%;
-  max-height: 89vh;
   max-width: none;
+  max-height: none;
 }
-
+@media(min-width: 1024px){
+  .rain--text {
+    font-size: 210px;
+  }
+}
 /*Screen 425px*/
 @media (max-width: 425px) {
-  .container {
-    height: 100vh;
-  }
-  .rain--text {
-    font-size: 5rem;
-  }
   .buttons {
     left: 15%;
     width: 70%;
   }
 }
 @media (max-width: 414px) {
-  .container {
-    height: 82vh;
-  }
   .buttons {
     left: 10%;
     width: 80%;
-  }
-  .rain--text {
-    margin: 30% 0;
-    font-size: 4rem;
   }
 }
 @media (max-width: 375px) {
@@ -112,27 +105,15 @@ form {
 }
 @media (max-width: 360px) {
   .container {
-    height: 82vh;
   }
   .buttons {
     left: 10%;
     width: 80%;
   }
-  .rain--text {
-    margin: 30% 0;
-    font-size: 4rem;
-  }
 }
 @media (max-width: 320px) {
-  .rain--text {
-    margin: 30% 0;
-    font-size: 3rem;
-  }
   .buttons {
     left: 5%;
     width: 90%;
-  }
-  .container {
-    height: 83vh;
   }
 }

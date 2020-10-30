@@ -10,10 +10,17 @@ function localValue(){
     }
 }
 
-fullButton.addEventListener('click', () => {                              // при нажатии на кнопку увеличения размера экрана меняем значение в localStorage в зависимости от наличия класса у главной страницы и в последующем используем это в скрипте игры 
-    container.classList.toggle('full-screen');
-    localValue();
-})
 window.addEventListener('load', ()=> {
     localValue();
+})
+
+fullButton.addEventListener('click', () => {                         // при нажатии на кнопку увеличения размера экрана меняем значение в localStorage в зависимости от наличия класса у главной страницы и в последующем используем это в скрипте игры 
+    if(document.fullscreenElement){
+        container.classList.toggle('full-screen');
+        document.exitFullscreen()  
+    } else{
+        container.classList.toggle('full-screen');
+        document.documentElement.requestFullscreen();
+    } 
+    localValue(); 
 })

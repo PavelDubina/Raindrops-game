@@ -123,8 +123,13 @@ function demonstration(){
     
      
     function fullScreen(){                                                                                          // функция разворачивающая приложение во весь экран
-        gameContainer.classList.toggle('full-screen');
-        gamePlace.classList.toggle('full--game--place');
+        if(document.fullscreenElement){
+            gameContainer.classList.remove('full-screen');
+            document.exitFullscreen()    
+        } else{
+            gameContainer.classList.add('full-screen');
+            document.documentElement.requestFullscreen();
+        } 
         if(gameContainer.classList.contains('full-screen')){
             localStorage.setItem('full', true)
         } else {

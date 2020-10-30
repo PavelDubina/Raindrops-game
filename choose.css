@@ -1,13 +1,17 @@
+body{
+  margin: 0;
+}
 .container {
   max-width: 1024px;
   max-height: 860px;
-  height: 93vh;
+  height: 100vh;
   margin: 0 auto;
   background: linear-gradient(#ffffff, #caffff);
   text-align: center;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
 }
 .inputs {
   height: 60%;
@@ -51,15 +55,25 @@ p {
   cursor: pointer;
   text-decoration: none;
 }
+.full--button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  outline: none;
+  border: none;
+  background: white;
+  color: rgb(5, 5, 5);
+  cursor: pointer;
+}
 .text {
   height: 30px;
   font-size: 18px;
 }
 .full-screen {
-    width: 100%;
-    max-height: 100vh;
-    max-width: none;
-  }
+  width: 100%;
+  max-width: none;
+  max-height: none;
+}
 /*Screen 425px*/
 @media (max-width: 425px) {
   .skip {
