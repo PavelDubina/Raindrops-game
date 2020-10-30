@@ -47,6 +47,22 @@ body {
   font-weight: bold;
   z-index: 0;
 }
+.sun{
+    position: absolute;
+    top: 0%;
+    background: rgba(255, 251, 0, 0.4);
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    border: 2px solid rgba(255, 187, 0, 0.24);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    font-weight: bold;
+    z-index: 0;
+}
 .operation {
   position: absolute;
   left: 5px;
@@ -325,6 +341,11 @@ form {
     height: 50px;
     font-size: 1.4rem;
   }
+  .sun{
+    width: 50px;
+    height: 50px;
+    font-size: 1.4rem;
+  }
   .operation {
     position: absolute;
     left: 3px;
@@ -368,6 +389,11 @@ form {
     height: 8%;
   }
   .circle {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+  .sun{
     width: 40px;
     height: 40px;
     font-size: 1.2rem;
