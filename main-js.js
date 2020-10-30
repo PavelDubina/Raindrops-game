@@ -24,3 +24,9 @@ fullButton.addEventListener('click', () => {                         // при �
     } 
     localValue(); 
 })
+
+document.addEventListener("keypress", function(e) {                                                            // убераем стандартное срабатывание клавиши Enter при полноэкранном режиме
+    if (e.key === 'Enter') {
+      e.preventDefault()
+    }
+  });

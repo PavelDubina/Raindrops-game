@@ -167,6 +167,13 @@ function demonstration(){
             }, 500);
         }, 3500);
     })
+
+    document.addEventListener("keypress", function(e) {                                                            // убераем стандартное срабатывание клавиши Enter при полноэкранном режиме
+        if (e.key === 'Enter') {
+          e.preventDefault()
+        }
+      });
+      
     createDrop();                                                                                                   // запуск
 }
 demonstration()

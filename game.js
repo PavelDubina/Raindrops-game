@@ -302,6 +302,12 @@ continueButton.addEventListener('click', () => {                                
         mainAudio.play();
     } else mainAudio.pause();
  })
+ document.addEventListener("keypress", function(e) {                                                            // убераем стандартное срабатывание клавиши Enter при полноэкранном режиме
+    if (e.key === 'Enter') {
+      e.preventDefault()
+    }
+  });
+
 createDrop();
 setTimeout(() => {
     createSun();   
