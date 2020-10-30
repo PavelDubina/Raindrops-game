@@ -11,6 +11,7 @@ const mainAudio = document.querySelector('.main--theme');                       
 const dropSound = document.querySelector('.drop--sound');                               // звук падения капли в воду
 const correctSound = document.querySelector('.right--sound');                           // звук при правильном ответе
 const failSound = document.querySelector('.fail--sound');                               // звук при неправильном ответе
+const sunSound = document.querySelector('.sun--sound')
 const failBoarder = document.querySelector('.fail--text');                              // всплывающее уведомление об минусе очков при неправильном ответе
 const statsBoard = document.querySelector('.game--stats');                              // окно статистики
 const scorePoins = document.querySelector('.score--point');                             // значение Score в окне статистики
@@ -44,9 +45,30 @@ function createSpray(one){                                                      
     gamePlace.append(img); 
 }
 
+function sunChecker(sun, drop){                                                             // функция взаимодействия с солнцем
+    if(!!sun){
+        const sunny = sun.children;
+        if(eval(`${sunny[0].textContent}${sunny[1].textContent==='÷'?'/':sunny[1].textContent==='×'?'*':sunny[1].textContent}${sunny[2].textContent}`) === +displayValue.value){     // сравниваем значение на дисплее с результатом выражения внутри солнца и меняем значения оператора с красивого на читаемое Eval
+            sunSound.play();
+            drop.forEach(drop => {
+                    createSpray(drop);                                                      // создаём брызги          
+                    gamePlace.removeChild(drop);                                            // удаляем с игрового поля все капли
+                   setTimeout(() => {                                                       // через время удаляем элемент с брызгами
+                    gamePlace.removeChild(document.querySelector('.spray'));                
+                   }, 1000);
+            });                                                     
+            gamePlace.removeChild(sun);                                                     // удаляем солнце
+            displayValue.value = '';                                                        // обнуляем дисплей
+        }
+    }
+}
+
+
 function useEnter(){                                                                    // функция нажатия на клавишу Enter
     const drop = document.querySelectorAll('.circle');
+    const sun = document.querySelector('.sun');
     if(!displayValue.value) return;                                                     // если дисплей пуст, ничего не происходит
+    sunChecker(sun, drop);                                                                                                
             for(let one of drop){  
                 const ch = one.children;                                                // создаём переменную 'детей' капли          
                  if(eval(`${ch[0].textContent}${ch[1].textContent==='÷'?'/':ch[1].textContent==='×'?'*':ch[1].textContent}${ch[2].textContent}`) === +displayValue.value){     // перебираем все капли, находящиеся в момент нажатия enter на игровом поле и сравниваем значение на дисплее с результатом выражения внутри капли и меняем значения оператора с красивого на читаемое Eval                       
@@ -55,13 +77,14 @@ function useEnter(){                                                            
                 correctSound.play();
                 score += scorePrice = scorePrice < 10 ? 10 : scorePrice;                // добавляем к Score текущее значение ScorePrice
                 scorePrice++;                                                           // увеличиваем ScorePrice
-                createSpray(one);                                                                 
+                createSpray(one);                                                       // создаём брызги          
                 gamePlace.removeChild(one);                                             // удаляем с игрового поля решенную каплю
                setTimeout(() => {                                                       // через время удаляем элемент с брызгами
                 gamePlace.removeChild(document.querySelector('.spray'));                
                }, 1000);                          
                 break;  
             } else { 
+                if(!!sun) return;
                 if(one !== drop[drop.length-1]) continue;                               // если ответ неправильный, то проверяем чтобы среди всех капель на игровом поле небыло правильного выражения внутри
                     failSound.currentTime = 0;
                     failSound.play();                                                   // сбрасываем на начало звук неправильного ответа и включаем его
@@ -138,12 +161,34 @@ function createDrop(){                                                          
         if(gameOver) return;                                                                    // если флаг gameOver true прекращаем создание капель
         createDrop();                                                                           // если флаг false вызываем ту же функцию
         countDrops++                                                                            // увеличиваем количество созданных капель
-        createTime = createTime<1020?1000:createTime-20;                                                                       // уменьшаем время создания капель
+        createTime = createTime<1020?1000:createTime-20;                                        // уменьшаем время создания капель
         lvOperand++;                                                                            // увеличиваем диапазон используемых операнд
         animationTime -= 30;                                                                    // уменьшаем время падения капли
         if(localStorage.getItem('operation')) return;
         lvOperation = score>400?3:score>200?2:score>50?1:0;                                     // увеличиваем индекс массива операторов. добавляя новые, основываясь на количестве очков в Score
     }, createTime);
+}
+
+function createSun(){                                                                           // функция создания капель
+    const circle = document.createElement('div');                                               // создаем элементы div
+    const firstOperand = document.createElement('span');                                        
+    const secondOperand = document.createElement('span');                                       // создаем элементы span
+    const operation = document.createElement('span');
+    circle.className = 'sun';                                                                   // добавляем класс к созданному элементу
+    operation.className = 'operation';
+    circle.style.left = randomPosition();                                                       // добавляем случайную позицию появления солнца
+    circle.append(firstOperand, operation, secondOperand);                                      
+    innerCircle(firstOperand, operation, secondOperand);                                        // заполняем солнце случайным содержимым и добавляем на игровое поле
+    gamePlace.append(circle);                                                                 
+    animate(circle, animationTime);                                                             // добавляем солнцу анимацию падения
+    setTimeout(() => {
+        if(gameOver) return;
+        createSun();
+    }, randomTime());
+}
+
+function randomTime(min = 15000, max = 60000){
+    return Math.floor(Math.random() * (max - min) + min);
 }
 
 
@@ -247,7 +292,11 @@ continueButton.addEventListener('click', () => {                                
         mainAudio.play();
     } else mainAudio.pause();
  })
-createDrop();                                                                                                   // запуск
+createDrop();
+setTimeout(() => {
+    createSun();   
+}, randomTime());
+                                                                                                 // запуск
 
 
  
