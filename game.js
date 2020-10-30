@@ -188,11 +188,10 @@ function showGameOver(){                                                        
 
 
 
-function firstOperandRandom(min = 0, max = 100){                                                                     // определение первого случайного операнда
-    return Math.round(min - 0.5 + Math.random() * (max - min + 1));
-    
-}
-function secondOperandRandom(min = 0, max = 100){                                                                     // определение случайных операнд 
+
+function operandRandom(min = 0, max = 100){                                                                     // определение случайных операнд
+    max = max>100?100:max;
+    min = min>100?100:min; 
     return Math.round(min - 0.5 + Math.random() * (max - min + 1));
     
 }
@@ -205,11 +204,13 @@ function operationRandom(min = 0, max = 3){                                     
 function innerCircle(fO, op, sO){                                                                                                   // функция заполнения капли случайным содержимым
     let firstOperandRange = localStorage.getItem('first')?localStorage.getItem('first').split('-'):[0, lvOperand];                  // проверяем есть ли значение в localStorage и если есть используем его, а если нет, игра запускается в обычном режиме с постепенным увеличением сложности
     let secondOperandRange = localStorage.getItem('second')?localStorage.getItem('second').split('-'):[0, lvOperand];
+    if(firstOperandRange[0]>firstOperandRange[1]) firstOperandRange.reverse();                                                      // проверяем корректность введенных данных и по необходимости корректируем
+    if(secondOperandRange[0]>secondOperandRange[1]) secondOperandRange.reverse();
     if(secondOperandRange.length < 2) secondOperandRange = [`${secondOperandRange[0]}`,`${secondOperandRange[0]}`];                  // если переданный из localStorage массив содержит только один элемент, ограничиваем диапазон значений одним числом
     if(firstOperandRange.length < 2) firstOperandRange = [`${firstOperandRange[0]}`,`${firstOperandRange[0]}`];
     const oper = operationRandom(0,lvOperation);
-    const first = firstOperandRandom(...firstOperandRange);
-    const second = secondOperandRandom(...secondOperandRange);
+    const first = operandRandom(...firstOperandRange);
+    const second = operandRandom(...secondOperandRange);
     if((first < second && oper === '*') || (first < second && oper === '-') || (first%second !== 0 && oper === '/') || (first/second === 0 && oper === '/') || first === second || (oper === '*' && second > 10)) return innerCircle(fO, op, sO); // проводим проверку на деление на ноль и ограничиваем сложность математических выражений
     fO.innerHTML = first;
     sO.innerHTML = second;
