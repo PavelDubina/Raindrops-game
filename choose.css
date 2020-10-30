@@ -114,7 +114,7 @@ p {
       left: 75px; 
   }
 }
-@media (max-height: 610px) {
+@media (max-height: 440px) {
   p {
     font-size: 10px;
     margin: 0 0 2px 0;
