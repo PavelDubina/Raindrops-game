@@ -1,6 +1,7 @@
 body {
   margin: 0;
 }
+
 /*main page*/
 .game--container {
   display: flex;
@@ -10,17 +11,17 @@ body {
   height: 100vh;
   margin: 0 auto;
 }
+
 .game--place {
-  background: radial-gradient(
-    ellipse at center,
-    rgba(255, 254, 234, 1) 0%,
-    rgba(255, 254, 234, 1) 35%,
-    #b7e8eb 100%
-  );
+  background: radial-gradient(ellipse at center,
+      rgba(255, 254, 234, 1) 0%,
+      rgba(255, 254, 234, 1) 35%,
+      #b7e8eb 100%);
   flex: 2.5;
   position: relative;
   overflow: hidden;
 }
+
 .number--place {
   position: relative;
   display: flex;
@@ -30,6 +31,7 @@ body {
   background: rgba(134, 241, 200, 0.4);
   flex: 1;
 }
+
 /*expression*/
 .circle {
   position: absolute;
@@ -47,11 +49,13 @@ body {
   font-weight: bold;
   z-index: 0;
 }
+
 .operation {
   position: absolute;
   left: 5px;
   top: 17px;
 }
+
 /*wave*/
 .wave {
   background: url(./img/wave.svg) repeat-x;
@@ -63,6 +67,7 @@ body {
   transform: translate3d(0, 0, 0);
   z-index: 10;
 }
+
 .wave2 {
   bottom: -40px;
   animation: wave 7s cubic-bezier(0.36, 0.45, 0.63, 0.53) -0.125s infinite,
@@ -70,23 +75,29 @@ body {
   opacity: 1;
   z-index: 10;
 }
+
 @keyframes wave {
   0% {
     margin-left: 0;
   }
+
   100% {
     margin-left: -1280px;
   }
 }
 
 @keyframes swell {
-  0%, 100% {
-    transform: translate3d(0,-25px,0);
+
+  0%,
+  100% {
+    transform: translate3d(0, -25px, 0);
   }
+
   50% {
-    transform: translate3d(0,5px,0);
+    transform: translate3d(0, 5px, 0);
   }
 }
+
 /*input place*/
 .num--container {
   margin: 20px;
@@ -98,6 +109,7 @@ body {
   width: 90%;
   height: 50%;
 }
+
 .display--container {
   display: flex;
   flex: 1;
@@ -107,6 +119,7 @@ body {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
+
 .display--input {
   border-bottom-width: 0;
   border-top-left-radius: 10px;
@@ -117,6 +130,7 @@ body {
   text-align: center;
   font-size: 6rem;
 }
+
 .button-container {
   margin-bottom: 2%;
   width: 95%;
@@ -125,17 +139,21 @@ body {
   grid-template-rows: repeat(4, 25%);
   grid-template-columns: repeat(4, 25%);
 }
+
 .clear,
 .enter {
   text-transform: capitalize;
   grid-row: span 2;
 }
+
 .del {
   text-transform: capitalize;
 }
+
 .null {
   grid-column: span 2;
 }
+
 .grid {
   cursor: pointer;
   font-size: 100%;
@@ -143,15 +161,19 @@ body {
   border: 1px solid rgb(158, 158, 158);
   outline: none;
 }
+
 .grid:active {
   box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
 }
+
 .activate {
   box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
 }
+
 .num {
   font-size: 2rem;
 }
+
 .fail--text {
   position: absolute;
   color: crimson;
@@ -162,15 +184,18 @@ body {
   opacity: 0;
   z-index: 5;
 }
+
 .open {
   opacity: 1;
   transition: opacity 2s linear;
 }
+
 .spray {
   position: absolute;
   z-index: 1;
   animation: drop 1s ease;
 }
+
 .instruction {
   height: 50%;
   font-size: 100%;
@@ -179,13 +204,16 @@ body {
   color: rgb(92, 71, 45);
   font-weight: 600;
 }
+
 .num--active {
   box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
 }
+
 form {
   margin: 0 0 20px;
   width: 50%;
 }
+
 .play {
   width: 100%;
   cursor: pointer;
@@ -196,14 +224,16 @@ form {
   outline: none;
   background: linear-gradient(#ffffff, #caffff);
 }
+
 @keyframes drop {
-  0% {
-  }
+  0% {}
+
   100% {
     transform: scale(12) rotate(45deg);
     opacity: 0;
   }
 }
+
 .but {
   position: absolute;
   bottom: 0;
@@ -213,69 +243,85 @@ form {
   color: rgb(5, 5, 5);
   cursor: pointer;
 }
+
 .full-screen {
   width: 100%;
   max-height: none;
   max-width: none;
 }
+
 .full--game--place {
   flex: 4;
 }
+
 .full--button {
   right: 0;
 }
+
 /*Screen 768px*/
 @media (max-width: 768px) {
   .num--container {
     height: 40%;
   }
+
   .circle {
     width: 50px;
     height: 50px;
     font-size: 1.4rem;
   }
+
   .operation {
     position: absolute;
     left: 3px;
     top: 12px;
   }
 }
+
 /*Screen 425px*/
 @media (max-width: 425px) {
   .game--container {
     flex-direction: column;
   }
+
   .num--container {
     height: 80%;
   }
+
   .button-container {
     width: 95%;
     height: 70%;
   }
+
   .display--container {
     height: 20%;
   }
+
   .circle {
     width: 40px;
     height: 40px;
     font-size: 1.2rem;
   }
+
   .operation {
     position: absolute;
     left: 3px;
     top: 9px;
   }
+
   .display--input {
     font-size: 3rem;
   }
+
   .num {
     font-size: 1.3rem;
   }
 }
+
 @media (max-width: 414px) {
   .display--input {
     font-size: 2.2rem;
   }
+
   .instruction {
     margin: 0 10px;
     font-size: 13px;
@@ -283,41 +329,51 @@ form {
     color: rgb(92, 71, 45);
     font-weight: 600;
   }
+
   form {
     margin: 10px 0 10px;
     width: 50%;
   }
+
   p {
     margin: 2px 0;
   }
+
   .play {
     font-size: 1.2rem;
     padding: 3%;
   }
+
   .fail--text {
     font-size: 2rem;
     top: 30%;
     left: 28%;
   }
 }
+
 @media (max-width: 375px) {
   .display--input {
     font-size: 2.2rem;
   }
+
   .instruction {
     font-size: 10px;
   }
+
   form {
     margin: 0px 0 5px;
   }
+
   .play {
     font-size: 1rem;
     padding: 2%;
   }
+
   .fail--text {
     left: 25%;
   }
 }
+
 @media (max-width: 320px) {
   .display--input {
     font-size: 1.8rem;

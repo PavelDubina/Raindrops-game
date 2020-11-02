@@ -1,6 +1,7 @@
 body {
   margin: 0;
 }
+
 /*main page*/
 .game--container {
   display: flex;
@@ -10,17 +11,17 @@ body {
   height: 100vh;
   margin: 0 auto;
 }
+
 .game--place {
-  background: radial-gradient(
-    ellipse at center,
-    rgba(255, 254, 234, 1) 0%,
-    rgba(255, 254, 234, 1) 35%,
-    #b7e8eb 100%
-  );
+  background: radial-gradient(ellipse at center,
+      rgba(255, 254, 234, 1) 0%,
+      rgba(255, 254, 234, 1) 35%,
+      #b7e8eb 100%);
   flex: 2.5;
   position: relative;
   overflow: hidden;
 }
+
 .number--place {
   position: relative;
   display: flex;
@@ -30,6 +31,7 @@ body {
   background: rgba(134, 241, 200, 0.4);
   flex: 1;
 }
+
 /*expression*/
 .circle {
   position: absolute;
@@ -47,27 +49,30 @@ body {
   font-weight: bold;
   z-index: 0;
 }
-.sun{
-    position: absolute;
-    top: 0%;
-    background: rgba(255, 251, 0, 0.4);
-    border-radius: 50%;
-    width: 70px;
-    height: 70px;
-    border: 2px solid rgba(255, 187, 0, 0.24);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    font-weight: bold;
-    z-index: 0;
+
+.sun {
+  position: absolute;
+  top: 0%;
+  background: rgba(255, 251, 0, 0.4);
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  border: 2px solid rgba(255, 187, 0, 0.24);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+  z-index: 0;
 }
+
 .operation {
   position: absolute;
   left: 5px;
   top: 17px;
 }
+
 /*img*/
 .stone {
   position: absolute;
@@ -75,6 +80,7 @@ body {
   width: 100%;
   height: 30%;
 }
+
 /*wave*/
 .wave {
   background: url(./img/wave.svg) repeat-x;
@@ -86,6 +92,7 @@ body {
   transform: translate3d(0, 0, 0);
   z-index: 2;
 }
+
 .wave2 {
   bottom: -30px;
   animation: wave 7s cubic-bezier(0.36, 0.45, 0.63, 0.53) -0.125s infinite,
@@ -93,23 +100,29 @@ body {
   opacity: 1;
   z-index: 2;
 }
+
 @keyframes wave {
   0% {
     margin-left: 0;
   }
+
   100% {
     margin-left: -1280px;
   }
 }
 
 @keyframes swell {
-  0%, 100% {
-    transform: translate3d(0,-25px,0);
+
+  0%,
+  100% {
+    transform: translate3d(0, -25px, 0);
   }
+
   50% {
-    transform: translate3d(0,5px,0);
+    transform: translate3d(0, 5px, 0);
   }
 }
+
 /*Score*/
 .score {
   display: flex;
@@ -127,13 +140,16 @@ body {
   font-size: 1.5rem;
   font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
 }
+
 .score--num {
   color: crimson;
   font-weight: bold;
 }
+
 .star {
   color: rgb(245, 212, 23);
 }
+
 /*input place*/
 .num--container {
   display: flex;
@@ -144,6 +160,7 @@ body {
   width: 90%;
   height: 50%;
 }
+
 .display--container {
   display: flex;
   flex: 1;
@@ -153,6 +170,7 @@ body {
   border-top-left-radius: 10px;
   border-top-right-radius: 10px;
 }
+
 .display--input {
   border-bottom-width: 0;
   border-top-left-radius: 10px;
@@ -163,6 +181,7 @@ body {
   text-align: center;
   font-size: 6rem;
 }
+
 .button-container {
   margin-bottom: 2%;
   width: 95%;
@@ -171,17 +190,21 @@ body {
   grid-template-rows: repeat(4, 25%);
   grid-template-columns: repeat(4, 25%);
 }
+
 .clear,
 .enter {
   text-transform: capitalize;
   grid-row: span 2;
 }
+
 .del {
   text-transform: capitalize;
 }
+
 .null {
   grid-column: span 2;
 }
+
 .grid {
   cursor: pointer;
   font-size: 100%;
@@ -189,15 +212,19 @@ body {
   border: 1px solid rgb(158, 158, 158);
   outline: none;
 }
+
 .grid:active {
   box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
 }
+
 .activate {
   box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
 }
+
 .num {
   font-size: 2rem;
 }
+
 .fail--text {
   position: absolute;
   color: crimson;
@@ -207,9 +234,11 @@ body {
   left: 40%;
   opacity: 0;
 }
+
 .open {
   animation: fail 2s linear;
 }
+
 .game--stats {
   position: absolute;
   top: 25%;
@@ -227,10 +256,12 @@ body {
   transform: translateY(-100vh);
   align-items: center;
 }
+
 .game--stats--visible {
   transition: transform 2s linear;
   transform: translateY(0);
 }
+
 .head {
   margin-bottom: 0;
   margin-top: 8px;
@@ -238,11 +269,13 @@ body {
   font-size: 1.8rem;
   font-style: italic;
 }
+
 .point {
   color: rgb(0, 183, 255);
   font-weight: bold;
   font-size: 1.3rem;
 }
+
 .score--text {
   margin: 0px;
   color: red;
@@ -250,12 +283,14 @@ body {
   font-size: 1.5rem;
   text-transform: lowercase;
 }
+
 .description {
   margin: 0.4rem;
   color: rgb(131, 99, 57);
   font-weight: bold;
   font-size: 1.3rem;
 }
+
 .reload--game {
   margin-top: 5%;
   height: 100%;
@@ -269,38 +304,46 @@ body {
   font-weight: bold;
   color: rgb(131, 99, 57);
 }
+
 .reload--game:active {
   box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
 }
+
 form {
   width: 30%;
   padding: 3% 0;
   margin-bottom: 10px;
 }
+
 .spray {
   position: absolute;
   z-index: 1;
   animation: drop 1s ease;
 }
+
 @keyframes drop {
-  0% {
-  }
+  0% {}
+
   100% {
     transform: scale(12) rotate(45deg);
     opacity: 0;
   }
 }
+
 @keyframes fail {
   0% {
     opacity: 0;
   }
+
   50% {
     opacity: 1;
   }
+
   100% {
     opacity: 0;
   }
 }
+
 .but {
   position: absolute;
   bottom: 0;
@@ -310,20 +353,25 @@ form {
   color: rgb(5, 5, 5);
   cursor: pointer;
 }
+
 .full-screen {
   width: 100%;
   max-height: none;
   max-width: none;
 }
+
 .full--game--place {
   flex: 4;
 }
+
 .full--button {
   right: 0;
 }
+
 .sound--button {
   left: 0;
 }
+
 .sound--button:active {
   box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
 }
@@ -333,19 +381,24 @@ form {
     width: 30%;
     left: 30%;
   }
+
   .head {
     font-size: 1.2rem;
   }
+
   .point {
     font-size: 0.8rem;
   }
+
   .score--text {
     font-size: 1.2rem;
   }
+
   .description {
     font-size: 0.9rem;
     margin: 0.2rem;
   }
+
   form {
     width: 30%;
     padding: 0;
@@ -358,129 +411,161 @@ form {
   .num--container {
     height: 40%;
   }
+
   .score {
     font-size: 1.2rem;
   }
+
   .circle {
     width: 50px;
     height: 50px;
     font-size: 1.4rem;
   }
-  .sun{
+
+  .sun {
     width: 50px;
     height: 50px;
     font-size: 1.4rem;
   }
+
   .operation {
     position: absolute;
     left: 3px;
     top: 12px;
   }
+
   .game--stats {
     width: 40%;
     left: 30%;
   }
+
   .head {
     font-size: 1.2rem;
   }
+
   .point {
     font-size: 0.9rem;
   }
+
   .score--text {
     font-size: 1.2rem;
   }
+
   .description {
     font-size: 0.9rem;
     margin: 0.2rem;
   }
 }
+
 /*Screen 425px*/
 @media (max-width: 425px) {
   .game--container {
     flex-direction: column;
   }
+
   .num--container {
     height: 80%;
   }
+
   .button-container {
     width: 95%;
     height: 70%;
   }
+
   .display--container {
     height: 20%;
   }
+
   .score {
     font-size: 1.1rem;
     height: 8%;
   }
+
   .circle {
     width: 40px;
     height: 40px;
     font-size: 1.2rem;
   }
-  .sun{
+
+  .sun {
     width: 40px;
     height: 40px;
     font-size: 1.2rem;
   }
+
   .operation {
     position: absolute;
     left: 3px;
     top: 9px;
   }
+
   .display--input {
     font-size: 3rem;
   }
+
   .num {
     font-size: 1.3rem;
   }
 }
+
 @media (max-width: 414px) {
   .game--stats {
     width: 80%;
     left: 10%;
   }
 }
+
 @media (max-width: 375px) {
   .display--input {
     font-size: 2.2rem;
   }
+
   .description {
     margin: 0.2rem;
   }
 }
+
 @media (max-width: 360px) {
   .game--stats {
     width: 80%;
     left: 10%;
   }
+
   .head {
     font-size: 1.1rem;
   }
+
   .point {
     font-size: 0.9rem;
   }
+
   .score--text {
     font-size: 1.1rem;
   }
+
   .description {
     font-size: 0.8rem;
     margin: 0.2rem;
   }
 }
+
 @media (max-width: 320px) {
   .display--input {
     font-size: 1.8rem;
   }
+
   .head {
     font-size: 1rem;
   }
+
   .point {
     font-size: 0.9rem;
   }
+
   .score--text {
     font-size: 1rem;
   }
+
   .description {
     font-size: 0.8rem;
     margin: 0.1rem;
