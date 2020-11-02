@@ -37,7 +37,6 @@ const demonstration = () => {
     }
     
     const updateDisplay = (e) => {                                                              // передача значения кнопок на дисплей при вводе мышкой                 
-        if(e.target.dataset.num !== '9') return;
         displayValue.value += e.target.dataset.num; 
         if(e.target.dataset.but === 'Enter'){ 
             useEnter();
