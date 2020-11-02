@@ -36,11 +36,12 @@ const demonstration = () => {
             displayValue.value = '';                                                        // обнуляем дисплей                                               
     }
     
-    const updateDisplay = (e) => {                                                               // передача значения кнопок на дисплей при вводе мышкой                 
-        displayValue.value += e.target.dataset.num;
+    const updateDisplay = (e) => {                                                              // передача значения кнопок на дисплей при вводе мышкой                 
+        if(e.target.dataset.num !== '9') return;
+        displayValue.value += e.target.dataset.num; 
         if(e.target.dataset.but === 'Enter'){ 
             useEnter();
-        }  
+        } 
     }
     
     const createDrop = () => {                                                                          // функция создания капель
@@ -57,7 +58,7 @@ const demonstration = () => {
         animate(circle, animationTime);                                                             // добавляем каждой капле анимацию падения
         setTimeout(() => {                                                                          // определяем повторение создания капель через определенное время
             if(countDrop === finishCountDrop) return;                                                             // заканчиваем демонстрацию
-            if(countDrop>0) {
+            if(countDrop > 0) {
                 createTime = 1200;
                 animationTime = 6000
             }                                                                          
@@ -129,9 +130,10 @@ const demonstration = () => {
         }
     }
     
-    
      buttonPad.addEventListener('click', updateDisplay);                                                            // обработчик события на поле с клавишами (делегирование)
+     
      fullButton.addEventListener('click', fullScreen);                                                              
+
      window.addEventListener('load', ()=> {                                                                         // искусственный клик на кнопку фоновой музыки при загрузке страницы 
         if(localStorage.getItem('full') === 'true') {                                                               // проверяем была ли нажата кнопка "во весь экран" в главном меню
         gameContainer.classList.add('full-screen');
