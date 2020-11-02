@@ -141,22 +141,42 @@ const demonstration = () => {
         gamePlace.classList.remove('full--game--place');
     }
     })
-    window.addEventListener('load', ()=> {                                                                         // искусственный клик на кнопки для демонстрации
-        setTimeout(() => {
-            buttons[2].click();
-            buttons[2].classList.add('num--active');
+
+    const showDemonstrationDrop = (ms) => {                                                                            // время через которое начнутся искусственные клики
+        return new Promise(resolve => {
             setTimeout(() => {
-                buttons[2].classList.remove('num--active');
-            }, 500);
-            setTimeout(() => {
-                buttons[10].click();
-                buttons[10].classList.add('num--active');
+                resolve();
+            }, ms)
+        })
+    }
+
+    const addClassActive = (index) => {                                                                                 // добавления класса подсветки кнопки
+        buttons[index].click();
+        buttons[index].classList.add('num--active');
+    }
+
+    const removeClassActive = (index) => {                                                                              // удаление класса подсветки кнопки
+        buttons[index].classList.remove('num--active');
+    }
+
+    window.addEventListener('load', () => {                                                                         // искусственный клик на кнопки для демонстрации
+    showDemonstrationDrop(3500)
+        .then(() => {
+            return new Promise(resolve => {
+                addClassActive(2);
                 setTimeout(() => {
-                    buttons[10].classList.remove('num--active');
+                removeClassActive(2);
+                resolve();
+                    }, 500)
+                })
+            })
+        .then(() => {
+                addClassActive(10)
+                setTimeout(() => {
+                removeClassActive(10);  
                 }, 500)
-            }, 500);
-        }, 3500);
     })
+})
 
     document.addEventListener("keypress", (e) => {                                                            // убераем стандартное срабатывание клавиши Enter при полноэкранном режиме
         if (e.key === 'Enter') {
@@ -170,8 +190,5 @@ demonstration()
 setTimeout(() => {
     document.location.reload();  
    }, 20000); 
-
-
- 
 
 
