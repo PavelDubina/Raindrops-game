@@ -1,32 +1,32 @@
-const fullButton = document.querySelector('.full--button');               // кнопка увеличения размера экрана
-const container = document.querySelector('.container');                 // главная страница
+const fullButton = document.querySelector('.full--button'); // enlarge screen button
+const container = document.querySelector('.container'); // home page
 
 
-const localValue = () => {
-    if(container.classList.contains('full-screen')){
+const uselocalValue = () => {
+    if (container.classList.contains('full-screen')) {
         localStorage.setItem('full', true)
     } else {
         localStorage.setItem('full', false)
     }
 }
 
-window.addEventListener('load', ()=> {
-    localValue();
+window.addEventListener('load', () => {
+    uselocalValue();
 })
 
-fullButton.addEventListener('click', () => {                         // при нажатии на кнопку увеличения размера экрана меняем значение в localStorage в зависимости от наличия класса у главной страницы и в последующем используем это в скрипте игры 
-    if(document.fullscreenElement){
+fullButton.addEventListener('click', () => { // when you click on the button to increase the screen size, we change the value in localStorage, depending on the presence of a class on the main page and then use it in the game script 
+    if (document.fullscreenElement) {
         container.classList.toggle('full-screen');
-        document.exitFullscreen()  
-    } else{
+        document.exitFullscreen()
+    } else {
         container.classList.toggle('full-screen');
         document.documentElement.requestFullscreen();
-    } 
-    localValue(); 
+    }
+    uselocalValue();
 })
 
-document.addEventListener("keypress", (e) => {                                                            // убераем стандартное срабатывание клавиши Enter при полноэкранном режиме
+document.addEventListener("keypress", (e) => { // remove the standard Enter key response in full screen mode
     if (e.key === 'Enter') {
-      e.preventDefault()
+        e.preventDefault()
     }
-  });
+});

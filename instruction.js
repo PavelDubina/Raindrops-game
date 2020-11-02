@@ -1,195 +1,184 @@
-const demonstration = () => {
+const beginDemonstration = () => {
 
-    const gameContainer = document.querySelector('.game--container');                       // общее окно игры
-    const fullButton = document.querySelector('.full--button')                              // кнопка увеличения размера экрана
-    const gamePlace = document.querySelector('.game--place');                               // игровое окно
-    const wave = document.querySelector('.wave'); 
-    const wave2 = document.querySelector('.wave2');                                          // волна
-    const displayValue = document.querySelector('.display--input');                         // дисплей
-    const buttonPad = document.querySelector('.button-container');                          // контейнер со всеми клавишами 
-    const buttons = document.querySelectorAll('.grid');                                     // все клавиши вместе
-    const failBoarder = document.querySelector('.fail--text');                              // всплывающее уведомление об минусе очков при неправильном ответе
-    const opArr = ['+','-'];                                                                // массив операторов
-    let gameIteration = 0;                                                                  // начальное количество капель, попавших в воду (будет увеличиваться и влиять на флаг gameOver)
-    let animationTime = 9000;                                                               // начальная длительность анимации падения (будет уменьшаться, усложняя игру)
+    const gameContainer = document.querySelector('.game--container'); // general game window
+    const fullButton = document.querySelector('.full--button') // enlarge screen button
+    const gamePlace = document.querySelector('.game--place'); // game window
+    const wave = document.querySelector('.wave');
+    const wave2 = document.querySelector('.wave2'); // wave
+    const displayValue = document.querySelector('.display--input'); // display
+    const buttonPad = document.querySelector('.button-container'); // container with all keys 
+    const buttons = document.querySelectorAll('.grid'); // all keys together
+    const failBoarder = document.querySelector('.fail--text'); // pop-up notification about minus points in case of wrong answer
+    const opArr = ['+', '-']; // array of operators
+    let gameIteration = 0; // the initial number of drops hitting the water (will increase and affect the gameOver flag)
+    let animationTime = 9000; // the initial duration of the fall animation (will decrease, making the game more difficult)
     let createTime = 5000
     let countDrop = 0;
-    const finishCountDrop = 4;                                                              // конец демонстраци после 4-й созданной капли
+    const finishCountDrop = 4; // end of demo after 4th created blob
     let gameOverCount = 3;
-    
-    const createSpray = (drop) => {                                                              // создаём брызги
+
+    const createSplashes = (drop) => { // creating splashes
         let img = new Image(8, 8);
         img.src = 'untitled.svg';
         img.className = 'spray';
         img.style.left = `${drop.offsetLeft + drop.offsetWidth/2}px`;
         img.style.top = `${drop.offsetTop + drop.offsetHeight/2}px`;
-        gamePlace.append(img); 
+        gamePlace.append(img);
     }
-    
-    const useEnter = () =>{                                                                    // функция нажатия на клавишу Enter
-        const drop = document.querySelector('.circle');           
-                    createSpray(drop);                                                                 
-                    gamePlace.removeChild(drop);                                             // удаляем с игрового поля решенную каплю
-                   setTimeout(() => {                                                       // через время удаляем элемент с брызгами
-                    gamePlace.removeChild(document.querySelector('.spray'));                
-                   }, 1000);                            
-            displayValue.value = '';                                                        // обнуляем дисплей                                               
+
+    const useEnterKey = () => { // function of pressing the Enter key
+        const drop = document.querySelector('.circle');
+        createSplashes(drop);
+        gamePlace.removeChild(drop); // remove the solved drop from the playing field
+        setTimeout(() => { // after a while, remove the element with splashes
+            gamePlace.removeChild(document.querySelector('.spray'));
+        }, 1000);
+        displayValue.value = ''; // reset the display                                               
     }
-    
-    const updateDisplay = (e) => {                                                              // передача значения кнопок на дисплей при вводе мышкой                 
-        displayValue.value += e.target.dataset.num; 
-        if(e.target.dataset.but === 'Enter'){ 
-            useEnter();
-        } 
+
+    const updateDisplay = (e) => { // transferring the value of buttons to the display when typing with a mouse            
+        displayValue.value += e.target.dataset.num;
+        if (e.target.dataset.but === 'Enter') {
+            useEnterKey();
+        }
     }
-    
-    const createDrop = () => {                                                                          // функция создания капель
-        const circle = document.createElement('div');                                               // создаем элементы div
-        const firstOperand = document.createElement('span');                                        
-        const secondOperand = document.createElement('span');                                       // создаем элементы span
+
+    const createDrop = () => { // droplet creation function
+        const drop = document.createElement('div'); // create div elements
+        const firstOperand = document.createElement('span');
+        const secondOperand = document.createElement('span'); // creating span elements
         const operation = document.createElement('span');
-        circle.className = 'circle';                                                                // добавляем классы к созданным элементам
+        drop.className = 'circle'; // add classes to the created elements
         operation.className = 'operation';
-        circle.style.left = randomPosition();                                                       // добавляем случайную позицию появления капель
-        circle.append(firstOperand, operation, secondOperand);                                      
-        innerCircle(firstOperand, operation, secondOperand);                                        // заполняем каплю случайным содержимым и добавляем на игровое поле
-        gamePlace.append(circle);                                                                 
-        animate(circle, animationTime);                                                             // добавляем каждой капле анимацию падения
-        setTimeout(() => {                                                                          // определяем повторение создания капель через определенное время
-            if(countDrop === finishCountDrop) return;                                                             // заканчиваем демонстрацию
-            if(countDrop > 0) {
+        drop.style.left = definiteRandomPosition(); // add a random drop position
+        drop.append(firstOperand, operation, secondOperand);
+        insertInsideDrop(firstOperand, operation, secondOperand); // fill the drop with random content and add it to the playing field
+        gamePlace.append(drop);
+        animateDrop(drop, animationTime); // add falling animation to each drop
+        setTimeout(() => { //we determine the repetition of the creation of drops after a certain time
+            if (countDrop === finishCountDrop) return; // ending the demo
+            if (countDrop > 0) {
                 createTime = 1200;
                 animationTime = 6000
-            }                                                                          
-            createDrop();                                                                           
+            }
+            createDrop();
         }, createTime);
         countDrop++;
     }
-    
-    
-    const randomPosition = (min = 0, max = 85) => {                                                                     // определение случайной позиции капли
+
+
+    const definiteRandomPosition = (min = 0, max = 85) => { // determination of a random drop position
         return Math.floor(Math.random() * (max - min) + min) + '%';
     }
-    
-    
-    const findHeightWave = () => {                                                                                      // определения высоты воды
+
+
+    const findHeightWave = () => { // determination of water height
         return gamePlace.offsetHeight - wave.offsetHeight;
     }
-    
-    
-    const animate = (circle, time) => {                                                                                 // функция, добавляющая капле анимацию keyframes
-        circle.animate([ { top: 0 },                                                                    
-            { top: `${findHeightWave() - circle.offsetHeight}px`} ],
-          time).finished
-            .then(()=> {
-              try{                                                                                                  // .finished возвращает промис и используем .then и try-catch, т.к. если элемент удаляется, а анимация не закончилась, то в консоле било ошибку
-                gamePlace.removeChild(circle);                                                                      // после окончания анимации, а именно падения капли в воду, удаляем её
-                gameIteration++;                                                                                    // увеличиваем количество капель, упавших в воду
-                wave.style.height = `${wave.offsetHeight + 20}px`;
-                wave2.style.height = `${wave.offsetHeight + 20}px`                                                   // повышаем уровень воды
-                if(gameIteration >= gameOverCount) { 
-                    failBoarder.innerHTML = 'Game Over';                                                            // отображаем в всплывающем окне сообщение Game Over
-                    failBoarder.classList.add('open');  
-                }; 
-              } catch {                                                                                             // если ошибка, выходим
-                  return;
-              }      
-        });         
+
+
+    const animateDrop = (drop, time) => { // a function that adds keyframes animation to the drop
+        drop.animate([{
+                        top: 0
+                    },
+                    {
+                        top: `${findHeightWave() - drop.offsetHeight}px`
+                    }
+                ],
+                time).finished
+            .then(() => {
+                try { // .finished returns a promise and use .then and try-catch as if the element is removed, and the animation has not ended, then an error occurred in the console
+                    gamePlace.removeChild(drop); // after the end of the animation, namely the drop in the water, remove it
+                    gameIteration++; // we increase the number of drops falling into the water
+                    wave.style.height = `${wave.offsetHeight + 20}px`;
+                    wave2.style.height = `${wave.offsetHeight + 20}px` // raising the water level
+                    if (gameIteration >= gameOverCount) {
+                        failBoarder.innerHTML = 'Game Over'; // display the Game Over message in the pop-up window
+                        failBoarder.classList.add('open');
+                    };
+                } catch { // if error, exit
+                    return;
+                }
+            });
     }
-    
-    const operandRandom = (min = 0, max = 50) => {                                                                     // определение случайных операнд
+
+    const definiteOperandRandom = (min = 0, max = 50) => { // definition of random operands
         return Math.round(min - 0.5 + Math.random() * (max - min + 1));
     }
-    
-    const operationRandom = (min = 0, max = 1) => {                                                                     // определение случайного оператора
+
+    const definiteOperationRandom = (min = 0, max = 1) => { // definition of a random operator
         return opArr[Math.floor(min + Math.random() * (max + 1 - min))];
     }
-    
-    const innerCircle = (firstOperand, operation, secondOperand) => {                                                                               // функция заполнения капли содержимым
-        firstOperand.innerHTML = countDrop > 0 ? operandRandom() : '7';
-        secondOperand.innerHTML = countDrop > 0 ? operandRandom() : '2';
-        operation.innerHTML = countDrop > 0 ? operationRandom() : '+';
+
+    const insertInsideDrop = (firstOperand, operation, secondOperand) => { // droplet filling function
+        firstOperand.innerHTML = countDrop > 0 ? definiteOperandRandom() : '7';
+        secondOperand.innerHTML = countDrop > 0 ? definiteOperandRandom() : '2';
+        operation.innerHTML = countDrop > 0 ? definiteOperationRandom() : '+';
     }
-    
-     
-    const fullScreen = () => {                                                                                          // функция разворачивающая приложение во весь экран
-        if(document.fullscreenElement){
+
+
+    const runFullScreenMode = () => { // function that expands the application to full screen
+        if (document.fullscreenElement) {
             gameContainer.classList.remove('full-screen');
             gamePlace.classList.remove('full--game--place');
-            document.exitFullscreen()    
-        } else{
+            document.exitFullscreen()
+        } else {
             gameContainer.classList.add('full-screen');
             gamePlace.classList.add('full--game--place');
-            document.documentElement.requestFullscreen();   
-        } 
-        if(gameContainer.classList.contains('full-screen')){
+            document.documentElement.requestFullscreen();
+        }
+        if (gameContainer.classList.contains('full-screen')) {
             localStorage.setItem('full', true)
         } else {
             localStorage.setItem('full', false)
         }
     }
-    
-     buttonPad.addEventListener('click', updateDisplay);                                                            // обработчик события на поле с клавишами (делегирование)
-     
-     fullButton.addEventListener('click', fullScreen);                                                              
 
-     window.addEventListener('load', ()=> {                                                                         // искусственный клик на кнопку фоновой музыки при загрузке страницы 
-        if(localStorage.getItem('full') === 'true') {                                                               // проверяем была ли нажата кнопка "во весь экран" в главном меню
-        gameContainer.classList.add('full-screen');
-        gamePlace.classList.add('full--game--place');
-    } else {
-        gameContainer.classList.remove('full-screen');
-        gamePlace.classList.remove('full--game--place');
-    }
+    buttonPad.addEventListener('click', updateDisplay); // event handler on the field with keys (delegation)
+
+    fullButton.addEventListener('click', runFullScreenMode);
+
+    window.addEventListener('load', () => { // artificial click on the background music button on page load
+        if (localStorage.getItem('full') === 'true') { // check if the "full screen" button was pressed in the main menu
+            gameContainer.classList.add('full-screen');
+            gamePlace.classList.add('full--game--place');
+        } else {
+            gameContainer.classList.remove('full-screen');
+            gamePlace.classList.remove('full--game--place');
+        }
     })
 
-    const showDemonstrationDrop = (ms) => {                                                                            // время через которое начнутся искусственные клики
-        return new Promise(resolve => {
-            setTimeout(() => {
-                resolve();
-            }, ms)
-        })
-    }
-
-    const addClassActive = (index) => {                                                                                 // добавления класса подсветки кнопки
+    const addClassActive = (index) => { // add a button backlight class
         buttons[index].click();
         buttons[index].classList.add('num--active');
     }
 
-    const removeClassActive = (index) => {                                                                              // удаление класса подсветки кнопки
+    const removeClassActive = (index) => { // remove button backlight class
         buttons[index].classList.remove('num--active');
     }
 
-    window.addEventListener('load', () => {                                                                         // искусственный клик на кнопки для демонстрации
-    showDemonstrationDrop(3500)
-        .then(() => {
-            return new Promise(resolve => {
-                addClassActive(2);
-                setTimeout(() => {
-                removeClassActive(2);
-                resolve();
-                    }, 500)
-                })
-            })
-        .then(() => {
-                addClassActive(10)
-                setTimeout(() => {
-                removeClassActive(10);  
-                }, 500)
+    window.addEventListener('load', () => { // artificial click on buttons for demonstration
+        setTimeout(() => {
+            addClassActive(2);
+        }, 3500);
+        setTimeout(() => {
+            removeClassActive(2);
+            addClassActive(10);
+        }, 4000)
+        setTimeout(() => {
+            removeClassActive(10);
+        }, 4500)
     })
-})
 
-    document.addEventListener("keypress", (e) => {                                                            // убераем стандартное срабатывание клавиши Enter при полноэкранном режиме
+    document.addEventListener("keypress", (e) => { // remove the standard Enter key response in full screen mode
         if (e.key === 'Enter') {
-          e.preventDefault()
+            e.preventDefault()
         }
-      });
-      
-    createDrop();                                                                                                   // запуск
+    });
+
+    createDrop(); // launch
 }
-demonstration()
+beginDemonstration()
 setTimeout(() => {
-    document.location.reload();  
-   }, 20000); 
-
-
+    document.location.reload();
+}, 20000);

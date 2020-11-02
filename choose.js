@@ -1,63 +1,59 @@
 const fullButton = document.querySelector('.full--button')
-const gameContainer = document.querySelector('.container'); 
+const gameContainer = document.querySelector('.container');
 const firstInput = document.querySelector('.first--input');
 const operationInput = document.querySelector('.operation--input');
 const secondInput = document.querySelector('.second--input');
 const play = document.querySelector('.play');
 const skip = document.querySelector('.skip');
 
-function fullScreen() {                                                                                          // функция разворачивающая приложение во весь экран
-    if(document.fullscreenElement){
+const runFullScreenMode = () => { // The ability to extend the application to full screen
+    if (document.fullscreenElement) {
         gameContainer.classList.remove('full-screen');
-        document.exitFullscreen()    
-    } else{
+        document.exitFullscreen()
+    } else {
         gameContainer.classList.add('full-screen');
         document.documentElement.requestFullscreen();
-    } 
-    if(gameContainer.classList.contains('full-screen')){
+    }
+    if (gameContainer.classList.contains('full-screen')) {
         localStorage.setItem('full', true)
     } else {
         localStorage.setItem('full', false)
     }
 }
 
-function limitedInput() {                                                                                                  // проверяем соответствует ли введенное значение установленным требованиям и если нет, то корректируем его  // после чего записываем в локальную память
-    this.value = this.value.replace(/([^0-9\-])/g,'');
-    if(!/([\-])/g.test(this.value) && +this.value > 100) this.value = 100;
+function limitInput() { // we check whether the entered value meets the established requirements and if not, then we correct it  // after which we write to local memory
+    this.value = this.value.replace(/([^0-9\-])/g, '');
+    if (!/([\-])/g.test(this.value) && +this.value > 100) this.value = 100;
     localStorage.setItem('first', this.value)
-  }
-
-window.addEventListener('load', function() {                                                                        
-    if(localStorage.getItem('full') === 'true') {                                                               // проверяем была ли нажата кнопка "во весь экран" в главном меню
-    gameContainer.classList.add('full-screen')
-} else {
-    gameContainer.classList.remove('full-screen')
 }
+
+window.addEventListener('load', () => {
+    if (localStorage.getItem('full') === 'true') { // check if the "full screen" button was pressed in the main menu
+        gameContainer.classList.add('full-screen')
+    } else {
+        gameContainer.classList.remove('full-screen')
+    }
 })
 
-firstInput.addEventListener('blur', limitedInput);                                                                  
-                                                                                           
-operationInput.addEventListener('blur', function() {
-    operationInput.value = operationInput.value.replace(/([^+\-/*])/g,'');
-    localStorage.setItem('operation',operationInput.value)
+firstInput.addEventListener('blur', limitInput);
+
+operationInput.addEventListener('blur', () => {
+    operationInput.value = operationInput.value.replace(/([^+\-/*])/g, '');
+    localStorage.setItem('operation', operationInput.value)
 })
 
-secondInput.addEventListener('blur', limitedInput)
+secondInput.addEventListener('blur', limitInput)
 
-skip.addEventListener('click', function() {                                                                           // если нажимаем клавишу Skip игра запускается в режиме по умолчанию
-    localStorage.removeItem('first' );
+skip.addEventListener('click', () => { // if we press the Skip key, the game starts in default mode
+    localStorage.removeItem('first');
     localStorage.removeItem('operation');
     localStorage.removeItem('second');
 })
 
-fullButton.addEventListener('click', fullScreen);
+fullButton.addEventListener('click', runFullScreenMode);
 
-document.addEventListener("keypress", function(e) {                                                            // убераем стандартное срабатывание клавиши Enter при полноэкранном режиме
+document.addEventListener("keypress", function (e) { // remove the standard Enter key response in full screen mode
     if (e.key === 'Enter') {
-      e.preventDefault()
+        e.preventDefault()
     }
-  });
-
-
-
-  
+});
