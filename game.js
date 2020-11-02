@@ -22,7 +22,7 @@ const perMinutePoint = document.querySelector('.per--minute');                  
 const soundButton = document.querySelector('.sound--button');                           // кнопка музыки
 const opArr = localStorage.getItem('operation')?[...localStorage.getItem('operation')]:['+','-','*','/'];         //проверяем localStorage и берем массив оттуда, если его нет, то используем по умолчанию             // массив операторов
 let gameOver = false;                                                                   // флаг показывающий окончена игра или нет
-let gameItaration = 0;                                                                  // начальное количество капель, попавших в воду (будет увеличиваться и влиять на флаг gameOver)
+let gameIteration = 0;                                                                  // начальное количество капель, попавших в воду (будет увеличиваться и влиять на флаг gameOver)
 let score = 0;                                                                          // начальное количество очков Score                                          
 let scorePrice = 10;                                                                    // количество начисляемых очков за первый правильный ответ (за каждый последующий правильный будет увеличиваться, а за не правильный уменьшаться)
 let animationTime = 9000;                                                               // начальная длительность анимации падения (будет уменьшаться, усложняя игру)
@@ -34,10 +34,7 @@ let correctAnswers = 0;                                                         
 let countDrops = 0;                                                                     // начальное количество cозданных капель
 
 
-
-
-
-function createSpray(one){                                                              // создаём брызги
+const createSpray = (one) => {                                                              // создаём брызги
     let img = new Image(8, 8);
     img.src = 'untitled.svg';
     img.className = 'spray';
@@ -46,7 +43,7 @@ function createSpray(one){                                                      
     gamePlace.append(img); 
 }
 
-function sunChecker(sun, drop){                                                             // функция взаимодействия с солнцем
+const sunChecker = (sun, drop) => {                                                             // функция взаимодействия с солнцем
     if(!!sun){
         const sunny = sun.children;
         if(eval(`${sunny[0].textContent}${sunny[1].textContent==='÷'?'/':sunny[1].textContent==='×'?'*':sunny[1].textContent}${sunny[2].textContent}`) === +displayValue.value){     // сравниваем значение на дисплее с результатом выражения внутри солнца и меняем значения оператора с красивого на читаемое Eval
@@ -64,15 +61,14 @@ function sunChecker(sun, drop){                                                 
     }
 }
 
-
-function useEnter(){                                                                    // функция нажатия на клавишу Enter
+const useEnter = () => {                                                                    // функция нажатия на клавишу Enter
     const drop = document.querySelectorAll('.circle');
     const sun = document.querySelector('.sun');
     if(!displayValue.value) return;                                                     // если дисплей пуст, ничего не происходит
     sunChecker(sun, drop);                                                                                                
             for(let one of drop){  
                 const ch = one.children;                                                // создаём переменную 'детей' капли          
-                 if(eval(`${ch[0].textContent}${ch[1].textContent==='÷'?'/':ch[1].textContent==='×'?'*':ch[1].textContent}${ch[2].textContent}`) === +displayValue.value){     // перебираем все капли, находящиеся в момент нажатия enter на игровом поле и сравниваем значение на дисплее с результатом выражения внутри капли и меняем значения оператора с красивого на читаемое Eval                       
+                 if(eval(`${ch[0].textContent}${ch[1].textContent === '÷' ? '/' : ch[1].textContent === '×' ? '*' : ch[1].textContent}${ch[2].textContent}`) === +displayValue.value){     // перебираем все капли, находящиеся в момент нажатия enter на игровом поле и сравниваем значение на дисплее с результатом выражения внутри капли и меняем значения оператора с красивого на читаемое Eval                       
                 correctAnswers++;                                                       
                 correctSound.currentTime = 0;                                           // сбрасываем на начало звук правильного ответа и включаем его
                 correctSound.play();
@@ -102,7 +98,7 @@ function useEnter(){                                                            
 }
 
 
-function activateButtons(e){                                                            // подсвечивание кнопок при вводе с клавиатуры
+const activateButtons = (e) => {                                                            // подсвечивание кнопок при вводе с клавиатуры
     buttons.forEach(but => {
         if(but.dataset.num === e.key || but.dataset.but === e.key){
             but.classList.toggle('activate');
@@ -110,8 +106,7 @@ function activateButtons(e){                                                    
     });
 }
 
-
-function updateDisplay(e){
+const updateDisplay = (e) => {
     if(displayValue.value.length < 3 && e.target.dataset.num) {                         // передача значения кнопок на дисплей при вводе мышкой
         displayValue.value += e.target.dataset.num
     }
@@ -125,8 +120,7 @@ function updateDisplay(e){
     }  
 }
 
-
-function updateDisplayWithKeyboard(e){                                                // передача значения кнопок на дисплей при вводе с клавиатуры  
+const updateDisplayWithKeyboard = (e) => {                                                // передача значения кнопок на дисплей при вводе с клавиатуры  
     if(e.location !== 3 ) return;                                                     // проверяем действительно ли нажата кнопка поля numpad
     switch(e.key){
         case '/': 
@@ -145,8 +139,7 @@ function updateDisplayWithKeyboard(e){                                          
     activateButtons(e);
 }
 
-
-function createDrop(){                                                                          // функция создания капель
+const createDrop = () => {                                                                          // функция создания капель
     const circle = document.createElement('div');                                               // создаем элементы div
     const firstOperand = document.createElement('span');                                        
     const secondOperand = document.createElement('span');                                       // создаем элементы span
@@ -170,7 +163,7 @@ function createDrop(){                                                          
     }, createTime);
 }
 
-function createSun(){                                                                           // функция создания капель
+const createSun = () => {                                                                           // функция создания капель
      if(gameOver) return;
     const circle = document.createElement('div');                                               // создаем элементы div
     const firstOperand = document.createElement('span');                                        
@@ -189,33 +182,33 @@ function createSun(){                                                           
     }, randomTime());
 }
 
-function randomTime(min = 15000, max = 60000){
+const randomTime = (min = 15000, max = 60000) => {
     return Math.floor(Math.random() * (max - min) + min);
 }
 
 
-function randomPosition(min = 0, max = 85){                                                                     // определение случайной позиции капли
+const randomPosition = (min = 0, max = 85) => {                                                                     // определение случайной позиции капли
     return Math.floor(Math.random() * (max - min) + min) + '%';
 }
 
 
-function findHeightWave(){                                                                                      // определения высоты воды
+const findHeightWave = () => {                                                                                      // определения высоты воды
     return gamePlace.offsetHeight - wave.offsetHeight;
 }
 
 
-function animate(circle, time){                                                                                 // функция, добавляющая капле анимацию keyframes
+const animate = (circle, time) => {                                                                                 // функция, добавляющая капле анимацию keyframes
     circle.animate([ { top: 0 },                                                                    
         { top: `${findHeightWave() - circle.offsetHeight}px`} ],
       time).finished
         .then(()=> {
           try{                                                                                                  // .finished возвращает промис и используем .then и try-catch, т.к. если элемент удаляется, а анимация не закончилась, то в консоле било ошибку
             gamePlace.removeChild(circle);                                                                      // после окончания анимации, а именно падения капли в воду, удаляем её
-            gameItaration++;                                                                                    // увеличиваем количество капель, упавших в воду
+            gameIteration++;                                                                                    // увеличиваем количество капель, упавших в воду
             wave.style.height = `${wave.offsetHeight + 20}px`
             wave2.style.height = `${wave.offsetHeight + 20}px`                                                   // повышаем уровень воды
             dropSound.play();                                                                                   // включаем звук падения капли
-            if(gameItaration >= gameOverCount) {                                                                // сравниваем количество попаданий капель в воду необходимых для окончания игры и количество капель, попавших в воду
+            if(gameIteration >= gameOverCount) {                                                                // сравниваем количество попаданий капель в воду необходимых для окончания игры и количество капель, попавших в воду
                 showGameOver();                                                                                 // если игра закончена появляется окно статистики        
                 gameOver = !gameOver;                                                                           // переключаем флаг gemeOver
                 document.querySelectorAll('.circle').forEach(drop => gamePlace.removeChild(drop))               // находим все капли на игровом поле в момент окончания игры и очищаем игровое поле                                                                               
@@ -226,7 +219,7 @@ function animate(circle, time){                                                 
     });         
 }
 
-function showGameOver(){                                                                                        // функция показа окна статистики при конце игры
+const showGameOver = () => {                                                                                        // функция показа окна статистики при конце игры
     statsBoard.classList.add('game--stats--visible');
     scorePoins.innerHTML = score;
     accuracyPoint.innerHTML = `${Math.ceil(correctAnswers*100/countDrops)}%`;
@@ -234,39 +227,34 @@ function showGameOver(){                                                        
     perMinutePoint.innerHTML = Math.round(correctAnswers/(performance.now()/1000/60))
 }
 
-
-
-
-function operandRandom(min = 0, max = 100){                                                                     // определение случайных операнд
+const operandRandom = (min = 0, max = 100) => {                                                                     // определение случайных операнд
     max = max>100?100:max;
     min = min>100?100:min; 
     return Math.round(min - 0.5 + Math.random() * (max - min + 1));
     
 }
 
-function operationRandom(min = 0, max = 3){                                                                     // определение случайного оператора
+const operationRandom = (min = 0, max = 3) => {                                                                     // определение случайного оператора
     return opArr[Math.floor(min + Math.random() * (max + 1 - min))];
 }
 
-
-function innerCircle(fO, op, sO){                                                                                                   // функция заполнения капли случайным содержимым
-    let firstOperandRange = localStorage.getItem('first')?localStorage.getItem('first').split('-'):[0, lvOperand];                  // проверяем есть ли значение в localStorage и если есть используем его, а если нет, игра запускается в обычном режиме с постепенным увеличением сложности
-    let secondOperandRange = localStorage.getItem('second')?localStorage.getItem('second').split('-'):[0, lvOperand];
-    if(firstOperandRange[0]>firstOperandRange[1]) firstOperandRange.reverse();                                                      // проверяем корректность введенных данных и по необходимости корректируем
-    if(secondOperandRange[0]>secondOperandRange[1]) secondOperandRange.reverse();
-    if(secondOperandRange.length < 2) secondOperandRange = [`${secondOperandRange[0]}`,`${secondOperandRange[0]}`];                  // если переданный из localStorage массив содержит только один элемент, ограничиваем диапазон значений одним числом
-    if(firstOperandRange.length < 2) firstOperandRange = [`${firstOperandRange[0]}`,`${firstOperandRange[0]}`];
-    const oper = operationRandom(0,lvOperation);
+const innerCircle = (firstOperand, operation, secondOperand) => {                                                                                                   // функция заполнения капли случайным содержимым
+    let firstOperandRange = localStorage.getItem('first') ? localStorage.getItem('first').split('-') : [0, lvOperand];                  // проверяем есть ли значение в localStorage и если есть используем его, а если нет, игра запускается в обычном режиме с постепенным увеличением сложности
+    let secondOperandRange = localStorage.getItem('second') ? localStorage.getItem('second').split('-') : [0, lvOperand];
+    if(firstOperandRange[0] > firstOperandRange[1]) firstOperandRange.reverse();                                                      // проверяем корректность введенных данных и по необходимости корректируем
+    if(secondOperandRange[0] > secondOperandRange[1]) secondOperandRange.reverse();
+    if(secondOperandRange.length < 2) secondOperandRange = [`${secondOperandRange[0]}`, `${secondOperandRange[0]}`];                  // если переданный из localStorage массив содержит только один элемент, ограничиваем диапазон значений одним числом
+    if(firstOperandRange.length < 2) firstOperandRange = [`${firstOperandRange[0]}`, `${firstOperandRange[0]}`];
+    const oper = operationRandom(0, lvOperation);
     const first = operandRandom(...firstOperandRange);
     const second = operandRandom(...secondOperandRange);
-    if((first < second && oper === '*') || (first < second && oper === '-') || (first%second !== 0 && oper === '/') || (first/second === 0 && oper === '/') || (oper === '*' && second > 10)) return innerCircle(fO, op, sO); // проводим проверку на деление на ноль и ограничиваем сложность математических выражений
-    fO.innerHTML = first;
-    sO.innerHTML = second;
-    op.innerHTML = oper==='/'?'÷':oper==='*'?'×':oper; 
+    if((first < second && oper === '*') || (first < second && oper === '-') || (first%second !== 0 && oper === '/') || (first/second === 0 && oper === '/') || (oper === '*' && second > 10)) return innerCircle(firstOperand, operation, secondOperand); // проводим проверку на деление на ноль и ограничиваем сложность математических выражений
+    firstOperand.innerHTML = first;
+    secondOperand.innerHTML = second;
+    operation.innerHTML = oper === '/' ? '÷' : oper === '*' ? '×' : oper; 
 }
-
  
-function fullScreen(){                                                                                          // функция разворачивающая приложение во весь экран
+const fullScreen = () => {                                                                                          // функция разворачивающая приложение во весь экран
     if(document.fullscreenElement){
         gameContainer.classList.remove('full-screen');
         gamePlace.classList.remove('full--game--place');
@@ -283,10 +271,15 @@ continueButton.addEventListener('click', () => {                                
     localStorage.removeItem('operation');
     localStorage.removeItem('second');
 })
+
  buttonPad.addEventListener('click', updateDisplay);                                                            // обработчик события на поле с клавишами (делегирование)
+
  window.addEventListener('keydown', updateDisplayWithKeyboard);                                                 // обработчик события нажатия на клавиши клавиатуры
+
  window.addEventListener('keyup', activateButtons);                                                             // обработчик события поднятия клавиши клавиатуры
- fullButton.addEventListener('click', fullScreen);                                                              
+
+ fullButton.addEventListener('click', fullScreen);
+
  window.addEventListener('load', ()=> {                                                                         // искусственный клик на кнопку фоновой музыки при загрузке страницы 
     soundButton.click();
     if(localStorage.getItem('full') === 'true') {                                                               // проверяем была ли нажата кнопка "во весь экран" в главном меню
@@ -297,12 +290,14 @@ continueButton.addEventListener('click', () => {                                
     gamePlace.classList.remove('full--game--place');
 }
 })
+
  soundButton.addEventListener('click', () => {                                                                  //обработчик события нажатия на клавишу фоновой музыки
     if(mainAudio.paused) {
         mainAudio.play();
     } else mainAudio.pause();
  })
- document.addEventListener("keypress", function(e) {                                                            // убераем стандартное срабатывание клавиши Enter при полноэкранном режиме
+
+ document.addEventListener("keypress", (e) => {                                                            // убераем стандартное срабатывание клавиши Enter при полноэкранном режиме
     if (e.key === 'Enter') {
       e.preventDefault()
     }

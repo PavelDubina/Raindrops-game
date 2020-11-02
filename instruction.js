@@ -1,4 +1,5 @@
-function demonstration(){
+const demonstration = () => {
+
     const gameContainer = document.querySelector('.game--container');                       // общее окно игры
     const fullButton = document.querySelector('.full--button')                              // кнопка увеличения размера экрана
     const gamePlace = document.querySelector('.game--place');                               // игровое окно
@@ -9,51 +10,40 @@ function demonstration(){
     const buttons = document.querySelectorAll('.grid');                                     // все клавиши вместе
     const failBoarder = document.querySelector('.fail--text');                              // всплывающее уведомление об минусе очков при неправильном ответе
     const opArr = ['+','-'];                                                                // массив операторов
-    let gameItaration = 0;                                                                  // начальное количество капель, попавших в воду (будет увеличиваться и влиять на флаг gameOver)
+    let gameIteration = 0;                                                                  // начальное количество капель, попавших в воду (будет увеличиваться и влиять на флаг gameOver)
     let animationTime = 9000;                                                               // начальная длительность анимации падения (будет уменьшаться, усложняя игру)
     let createTime = 5000
     let countDrop = 0;
+    const finishCountDrop = 4;                                                              // конец демонстраци после 4-й созданной капли
     let gameOverCount = 3;
     
-    
-    function createSpray(one){                                                              // создаём брызги
+    const createSpray = (drop) => {                                                              // создаём брызги
         let img = new Image(8, 8);
         img.src = 'untitled.svg';
         img.className = 'spray';
-        img.style.left = `${one.offsetLeft + one.offsetWidth/2}px`;
-        img.style.top = `${one.offsetTop + one.offsetHeight/2}px`;
+        img.style.left = `${drop.offsetLeft + drop.offsetWidth/2}px`;
+        img.style.top = `${drop.offsetTop + drop.offsetHeight/2}px`;
         gamePlace.append(img); 
     }
     
-    function useEnter(){                                                                    // функция нажатия на клавишу Enter
-        const drop = document.querySelectorAll('.circle');
-        if(!displayValue.value) return;                                                     // если дисплей пуст, ничего не происходит
-                for(let one of drop){            
-                     if(eval(one.textContent) === +displayValue.value){     // перебираем все капли, находящиеся в момент нажатия enter на игровом поле и сравниваем значение на дисплее с результатом выражения внутри капли и меняем значения оператора с красивого на читаемое Eval                                                                        // увеличиваем ScorePrice
-                    createSpray(one);                                                                 
-                    gamePlace.removeChild(one);                                             // удаляем с игрового поля решенную каплю
+    const useEnter = () =>{                                                                    // функция нажатия на клавишу Enter
+        const drop = document.querySelector('.circle');           
+                    createSpray(drop);                                                                 
+                    gamePlace.removeChild(drop);                                             // удаляем с игрового поля решенную каплю
                    setTimeout(() => {                                                       // через время удаляем элемент с брызгами
                     gamePlace.removeChild(document.querySelector('.spray'));                
-                   }, 1000);                          
-                    break;  
-                }
-        }
+                   }, 1000);                            
             displayValue.value = '';                                                        // обнуляем дисплей                                               
     }
     
-    
-    
-    function updateDisplay(e){
-        if(displayValue.value.length < 3 && e.target.dataset.num) {                         // передача значения кнопок на дисплей при вводе мышкой
-            displayValue.value += e.target.dataset.num
-        }
-        switch(e.target.dataset.but){
-            case 'Enter': 
+    const updateDisplay = (e) => {                                                               // передача значения кнопок на дисплей при вводе мышкой                 
+        displayValue.value += e.target.dataset.num;
+        if(e.target.dataset.but === 'Enter'){ 
             useEnter();
         }  
     }
     
-    function createDrop(){                                                                          // функция создания капель
+    const createDrop = () => {                                                                          // функция создания капель
         const circle = document.createElement('div');                                               // создаем элементы div
         const firstOperand = document.createElement('span');                                        
         const secondOperand = document.createElement('span');                                       // создаем элементы span
@@ -66,7 +56,7 @@ function demonstration(){
         gamePlace.append(circle);                                                                 
         animate(circle, animationTime);                                                             // добавляем каждой капле анимацию падения
         setTimeout(() => {                                                                          // определяем повторение создания капель через определенное время
-            if(countDrop === 4) return;                                                             // заканчиваем демонстрацию
+            if(countDrop === finishCountDrop) return;                                                             // заканчиваем демонстрацию
             if(countDrop>0) {
                 createTime = 1200;
                 animationTime = 6000
@@ -77,27 +67,27 @@ function demonstration(){
     }
     
     
-    function randomPosition(min = 0, max = 85){                                                                     // определение случайной позиции капли
+    const randomPosition = (min = 0, max = 85) => {                                                                     // определение случайной позиции капли
         return Math.floor(Math.random() * (max - min) + min) + '%';
     }
     
     
-    function findHeightWave(){                                                                                      // определения высоты воды
+    const findHeightWave = () => {                                                                                      // определения высоты воды
         return gamePlace.offsetHeight - wave.offsetHeight;
     }
     
     
-    function animate(circle, time){                                                                                 // функция, добавляющая капле анимацию keyframes
+    const animate = (circle, time) => {                                                                                 // функция, добавляющая капле анимацию keyframes
         circle.animate([ { top: 0 },                                                                    
             { top: `${findHeightWave() - circle.offsetHeight}px`} ],
           time).finished
             .then(()=> {
               try{                                                                                                  // .finished возвращает промис и используем .then и try-catch, т.к. если элемент удаляется, а анимация не закончилась, то в консоле било ошибку
                 gamePlace.removeChild(circle);                                                                      // после окончания анимации, а именно падения капли в воду, удаляем её
-                gameItaration++;                                                                                    // увеличиваем количество капель, упавших в воду
+                gameIteration++;                                                                                    // увеличиваем количество капель, упавших в воду
                 wave.style.height = `${wave.offsetHeight + 20}px`;
                 wave2.style.height = `${wave.offsetHeight + 20}px`                                                   // повышаем уровень воды
-                if(gameItaration >= gameOverCount) { 
+                if(gameIteration >= gameOverCount) { 
                     failBoarder.innerHTML = 'Game Over';                                                            // отображаем в всплывающем окне сообщение Game Over
                     failBoarder.classList.add('open');  
                 }; 
@@ -107,22 +97,22 @@ function demonstration(){
         });         
     }
     
-    function operandRandom(min = 0, max = 50){                                                                     // определение случайных операнд
+    const operandRandom = (min = 0, max = 50) => {                                                                     // определение случайных операнд
         return Math.round(min - 0.5 + Math.random() * (max - min + 1));
     }
     
-    function operationRandom(min = 0, max = 1){                                                                     // определение случайного оператора
+    const operationRandom = (min = 0, max = 1) => {                                                                     // определение случайного оператора
         return opArr[Math.floor(min + Math.random() * (max + 1 - min))];
     }
     
-    function innerCircle(fO, op, sO){                                                                               // функция заполнения капли содержимым
-        fO.innerHTML = countDrop>0?operandRandom():'7';
-        sO.innerHTML = countDrop>0?operandRandom():'2';
-        op.innerHTML = countDrop>0?operationRandom():'+';
+    const innerCircle = (firstOperand, operation, secondOperand) => {                                                                               // функция заполнения капли содержимым
+        firstOperand.innerHTML = countDrop > 0 ? operandRandom() : '7';
+        secondOperand.innerHTML = countDrop > 0 ? operandRandom() : '2';
+        operation.innerHTML = countDrop > 0 ? operationRandom() : '+';
     }
     
      
-    function fullScreen(){                                                                                          // функция разворачивающая приложение во весь экран
+    const fullScreen = () => {                                                                                          // функция разворачивающая приложение во весь экран
         if(document.fullscreenElement){
             gameContainer.classList.remove('full-screen');
             gamePlace.classList.remove('full--game--place');
@@ -168,7 +158,7 @@ function demonstration(){
         }, 3500);
     })
 
-    document.addEventListener("keypress", function(e) {                                                            // убераем стандартное срабатывание клавиши Enter при полноэкранном режиме
+    document.addEventListener("keypress", (e) => {                                                            // убераем стандартное срабатывание клавиши Enter при полноэкранном режиме
         if (e.key === 'Enter') {
           e.preventDefault()
         }

@@ -2,7 +2,7 @@ const fullButton = document.querySelector('.full--button');               // к�
 const container = document.querySelector('.container');                 // главная страница
 
 
-function localValue(){
+const localValue = () => {
     if(container.classList.contains('full-screen')){
         localStorage.setItem('full', true)
     } else {
@@ -25,7 +25,7 @@ fullButton.addEventListener('click', () => {                         // при �
     localValue(); 
 })
 
-document.addEventListener("keypress", function(e) {                                                            // убераем стандартное срабатывание клавиши Enter при полноэкранном режиме
+document.addEventListener("keypress", (e) => {                                                            // убераем стандартное срабатывание клавиши Enter при полноэкранном режиме
     if (e.key === 'Enter') {
       e.preventDefault()
     }
