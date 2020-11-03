@@ -81,7 +81,10 @@ const useEnter = () => { // function of pressing the Enter key
             }, 1000);
             break;
         } else {
-            if (!!sun) return;
+            if (!!sun) {
+                displayValue.value = ''; // reset the display
+                return;
+            }
             if (one !== drop[drop.length - 1]) continue; // if the answer is incorrect, then we check that among all the drops on the playing field there is no correct expression inside
             failSound.currentTime = 0;
             failSound.play(); // reset the sound of the wrong answer to the beginning and turn it on
