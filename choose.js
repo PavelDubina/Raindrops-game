@@ -21,10 +21,10 @@ const runFullScreenMode = () => { // The ability to extend the application to fu
     }
 }
 
-function limitInput() { // we check whether the entered value meets the established requirements and if not, then we correct it  // after which we write to local memory
-    this.value = this.value.replace(/([^0-9\-])/g, '');
-    if (!/([\-])/g.test(this.value) && +this.value > 100) this.value = 100;
-    localStorage.setItem('first', this.value)
+const limitInput = (e) => { // we check whether the entered value meets the established requirements and if not, then we correct it  // after which we write to local memory
+    e.target.value = e.target.value.replace(/([^0-9\-])/g, '');
+    if (!/([\-])/g.test(e.target.value) && +e.target.value > 100) e.target.value = 100;
+    localStorage.setItem('first', e.target.value)
 }
 
 window.addEventListener('load', () => {
