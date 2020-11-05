@@ -1,3 +1,4 @@
+const reloadTime = 20000;
 const beginDemonstration = () => {
 
     const gameContainer = document.querySelector('.game--container'); // general game window
@@ -10,11 +11,17 @@ const beginDemonstration = () => {
     const buttons = document.querySelectorAll('.grid'); // all keys together
     const failBoarder = document.querySelector('.fail--text'); // pop-up notification about minus points in case of wrong answer
     const opArr = ['+', '-']; // array of operators
+    const finishCountDrop = 4; // end of demo after 4th created blob
+    const timeForRemoveSplashes = 1000;
+    const timeForCreateLastDrops = 1200;
+    const timeForAnimateLastDrops = 6000;
+    const timeToPressNum = 3500;
+    const timeToPressEnter = 4000;
+    const timeToUpEnter = 4500;
     let gameIteration = 0; // the initial number of drops hitting the water (will increase and affect the gameOver flag)
     let animationTime = 9000; // the initial duration of the fall animation (will decrease, making the game more difficult)
     let createTime = 5000
     let countDrop = 0;
-    const finishCountDrop = 4; // end of demo after 4th created blob
     let gameOverCount = 3;
 
     const createSplashes = (drop) => { // creating splashes
@@ -32,13 +39,13 @@ const beginDemonstration = () => {
         gamePlace.removeChild(drop); // remove the solved drop from the playing field
         setTimeout(() => { // after a while, remove the element with splashes
             gamePlace.removeChild(document.querySelector('.spray'));
-        }, 1000);
+        }, timeForRemoveSplashes);
         displayValue.value = ''; // reset the display                                               
     }
 
     const updateDisplay = (e) => { // transferring the value of buttons to the display when typing with a mouse            
         displayValue.value += e.target.dataset.num;
-        if (e.target.dataset.but === 'Enter') {
+        if (e.target.dataset.btn === 'Enter') {
             useEnterKey();
         }
     }
@@ -58,24 +65,21 @@ const beginDemonstration = () => {
         setTimeout(() => { //we determine the repetition of the creation of drops after a certain time
             if (countDrop === finishCountDrop) return; // ending the demo
             if (countDrop > 0) {
-                createTime = 1200;
-                animationTime = 6000
+                createTime = timeForCreateLastDrops;
+                animationTime = timeForAnimateLastDrops;
             }
             createDrop();
         }, createTime);
         countDrop++;
     }
 
-
     const definiteRandomPosition = (min = 0, max = 85) => { // determination of a random drop position
         return Math.floor(Math.random() * (max - min) + min) + '%';
     }
 
-
     const findHeightWave = () => { // determination of water height
         return gamePlace.offsetHeight - wave.offsetHeight;
     }
-
 
     const animateDrop = (drop, time) => { // a function that adds keyframes animation to the drop
         drop.animate([{
@@ -115,7 +119,6 @@ const beginDemonstration = () => {
         secondOperand.innerHTML = countDrop > 0 ? definiteOperandRandom() : '2';
         operation.innerHTML = countDrop > 0 ? definiteOperationRandom() : '+';
     }
-
 
     const runFullScreenMode = () => { // function that expands the application to full screen
         if (document.fullscreenElement) {
@@ -160,14 +163,14 @@ const beginDemonstration = () => {
     window.addEventListener('load', () => { // artificial click on buttons for demonstration
         setTimeout(() => {
             addClassActive(2);
-        }, 3500);
+        }, timeToPressNum);
         setTimeout(() => {
             removeClassActive(2);
             addClassActive(10);
-        }, 4000)
+        }, timeToPressEnter)
         setTimeout(() => {
             removeClassActive(10);
-        }, 4500)
+        }, timeToUpEnter)
     })
 
     document.addEventListener("keypress", (e) => { // remove the standard Enter key response in full screen mode
@@ -181,4 +184,4 @@ const beginDemonstration = () => {
 beginDemonstration()
 setTimeout(() => {
     document.location.reload();
-}, 20000);
+}, reloadTime);

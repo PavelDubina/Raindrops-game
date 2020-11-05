@@ -21,6 +21,42 @@ const solvePoint = document.querySelector('.solve'); // the value of the number 
 const perMinutePoint = document.querySelector('.per--minute'); // the value of the number of correct answers per minute in the statistics window
 const soundButton = document.querySelector('.sound--button'); // music button
 const opArr = localStorage.getItem('operation') ? [...localStorage.getItem('operation')] : ['+', '-', '*', '/']; // check localStorage and take an array from there, if it is not there, then use the default // array of operators
+const timeForRemoveSplashes = 1000;
+const defaultScoreValue = 10;
+const timeForRemoveFailBoarder = 500;
+const scoreValueForLvUp = {
+    lv1: 50,
+    lv2: 200,
+    lv3: 400
+}
+const minCreateTime = 1000;
+const decreaseCreateTime = 20;
+const decreaseAnimateTime = 30;
+const randomTimeValue = {
+    min: 15000,
+    max: 60000
+}
+const randomPositionValue = {
+    min: 0,
+    max: 85
+}
+const randomOperandValue = {
+    min: 0,
+    max: 100
+}
+const randomOperationValue = {
+    min: 0,
+    max: 3
+}
+const convertToPercentageValue = 100;
+const msPerSec = 1000;
+const secPerMinute = 60;
+const indexOfOperations = {
+    first: 0,
+    second: 1,
+    third: 2,
+    fourth: 3
+}
 let gameOver = false; // flag indicating whether the game is over or not
 let gameIteration = 0; // the initial number of drops hitting the water (will increase and affect the gameOver flag)
 let score = 0; // Initial Score                                          
@@ -32,7 +68,6 @@ let lvOperand = 10; // initial range of operand (will increase, making the game 
 let lvOperation = localStorage.getItem('operation') ? opArr.length - 1 : 0; // starting index of the array of operators (will increase to 3, adding new operators and making the game more difficult)
 let correctAnswers = 0; // initial number of correct answers
 let countDrops = 0; // the initial number of drops created
-
 
 const createSplashes = (one) => { // creating splashes
     let img = new Image(8, 8);
@@ -46,14 +81,19 @@ const createSplashes = (one) => { // creating splashes
 const useSun = (sun, drop) => { // sun interaction function
     if (!!sun) {
         const sunny = sun.children;
-        if (eval(`${sunny[0].textContent}${sunny[1].textContent==='÷'?'/':sunny[1].textContent==='×'?'*':sunny[1].textContent}${sunny[2].textContent}`) === +displayValue.value) { // сравниваем значение на дисплее с результатом выражения внутри солнца и меняем значения оператора с красивого на читаемое Eval
+        const firstOperand = sunny[0].textContent;
+        const secondOperand = sunny[2].textContent;
+        const operation = sunny[1].textContent;
+        const operationEqualsDivision = sunny[1].textContent === '÷';
+        const operationEqualsMultiplication = sunny[1].textContent === '×';
+        if (eval(`${firstOperand}${operationEqualsDivision ? '/' : operationEqualsMultiplication? '*' : operation}${secondOperand}`) === +displayValue.value) { // сравниваем значение на дисплее с результатом выражения внутри солнца и меняем значения оператора с красивого на читаемое Eval
             sunSound.play();
             drop.forEach(drop => {
                 createSplashes(drop); //creating splashes         
                 gamePlace.removeChild(drop); //remove all drops from the playing field
                 setTimeout(() => { // after a while, remove the element with splashes
                     gamePlace.removeChild(document.querySelector('.spray'));
-                }, 1000);
+                }, timeForRemoveSplashes);
             });
             gamePlace.removeChild(sun); // remove the sun
             displayValue.value = ''; // reset the display
@@ -67,18 +107,23 @@ const useEnter = () => { // function of pressing the Enter key
     if (!displayValue.value) return; // if the display is blank, nothing happens
     useSun(sun, drop);
     for (let one of drop) {
-        const ch = one.children; // create the variable 'children' of the blob         
-        if (eval(`${ch[0].textContent}${ch[1].textContent === '÷' ? '/' : ch[1].textContent === '×' ? '*' : ch[1].textContent}${ch[2].textContent}`) === +displayValue.value) { // we iterate over all the drops that are on the playing field at the moment of pressing enter and compare the value on the display with the result of the expression inside the drop and change the values ​​of the operator from beautiful to readable Eval                       
+        const children = one.children; // create the variable 'children' of the blob 
+        const firstOperand = children[0].textContent;
+        const secondOperand = children[2].textContent;
+        const operation = children[1].textContent;
+        const operationEqualsDivision = children[1].textContent === '÷';
+        const operationEqualsMultiplication = children[1].textContent === '×';
+        if (eval(`${firstOperand}${operationEqualsDivision ? '/' : operationEqualsMultiplication ? '*' : operation}${secondOperand}`) === +displayValue.value) { // we iterate over all the drops that are on the playing field at the moment of pressing enter and compare the value on the display with the result of the expression inside the drop and change the values ​​of the operator from beautiful to readable Eval                       
             correctAnswers++;
             correctSound.currentTime = 0; // reset the sound of the correct answer to the beginning and turn it on
             correctSound.play();
-            score += scorePrice = scorePrice < 10 ? 10 : scorePrice; // add the current ScorePrice value to Score
+            score += scorePrice = scorePrice < defaultScoreValue ? defaultScoreValue : scorePrice; // add the current ScorePrice value to Score
             scorePrice++; // increase ScorePrice
             createSplashes(one); // creating splashes         
             gamePlace.removeChild(one); // remove the solved drop from the playing field
             setTimeout(() => { // after a while, remove the element with splashes
                 gamePlace.removeChild(document.querySelector('.spray'));
-            }, 1000);
+            }, timeForRemoveSplashes);
             break;
         } else {
             if (!!sun) {
@@ -88,11 +133,11 @@ const useEnter = () => { // function of pressing the Enter key
             if (one !== drop[drop.length - 1]) continue; // if the answer is incorrect, then we check that among all the drops on the playing field there is no correct expression inside
             failSound.currentTime = 0;
             failSound.play(); // reset the sound of the wrong answer to the beginning and turn it on
-            failBoarder.innerHTML = -(scorePrice < 10 ? 10 : scorePrice); // display the number of points taken from Score in the pop-up window
+            failBoarder.innerHTML = -(scorePrice < defaultScoreValue ? defaultScoreValue : scorePrice); // display the number of points taken from Score in the pop-up window
             failBoarder.classList.add('open'); // add a class to this window to show it
             setTimeout(() => { // after the specified time, delete and return this window to opacity 0
                 failBoarder.classList.remove('open');
-            }, 500);
+            }, timeForRemoveFailBoarder);
             score = score - scorePrice <= 0 ? 0 : score - scorePrice; // subtract the current ScorePrice value from Score
         }
     }
@@ -102,9 +147,9 @@ const useEnter = () => { // function of pressing the Enter key
 
 
 const activateButtons = (e) => { // backlighting of buttons when entering from the keyboard
-    buttons.forEach(but => {
-        if (but.dataset.num === e.key || but.dataset.but === e.key) {
-            but.classList.toggle('activate');
+    buttons.forEach(btn => {
+        if (btn.dataset.num === e.key || btn.dataset.btn === e.key) {
+            btn.classList.toggle('activate');
         }
     });
 }
@@ -113,7 +158,7 @@ const updateDisplay = (e) => {
     if (displayValue.value.length < 3 && e.target.dataset.num) { // transferring the value of buttons to the display when typing with a mouse
         displayValue.value += e.target.dataset.num
     }
-    switch (e.target.dataset.but) {
+    switch (e.target.dataset.btn) {
         case '+':
             displayValue.value = '';
             break;
@@ -163,11 +208,11 @@ const createDrop = () => { // droplet creation function
         if (gameOver) return; // if the gameOver flag is true, stop creating drops
         createDrop(); // if the flag is false, call the same function
         countDrops++ // increase the number of drops created
-        createTime = createTime < 1020 ? 1000 : createTime - 20; // reduce the time for creating drops
+        createTime = createTime < (minCreateTime + decreaseCreateTime) ? minCreateTime : createTime - decreaseCreateTime; // reduce the time for creating drops
         lvOperand++; // increase the range of used operands
-        animationTime -= 30; // reduce the drop fall time
+        animationTime -= decreaseAnimateTime; // reduce the drop fall time
         if (localStorage.getItem('operation')) return;
-        lvOperation = score > 400 ? 3 : score > 200 ? 2 : score > 50 ? 1 : 0; // increase the index of the operator array. adding new ones based on the number of points in the Score
+        lvOperation = score > scoreValueForLvUp.lv3 ? indexOfOperations.fourth : score > scoreValueForLvUp.lv2 ? indexOfOperations.third : score > scoreValueForLvUp.lv1 ? indexOfOperations.second : indexOfOperations.first; // increase the index of the operator array. adding new ones based on the number of points in the Score
     }, createTime);
 }
 
@@ -190,12 +235,12 @@ const createSun = () => { // sun creation function
     }, definiteRandomTime());
 }
 
-const definiteRandomTime = (min = 15000, max = 60000) => { // determination the random time of the sun
+const definiteRandomTime = (min = randomTimeValue.min, max = randomTimeValue.max) => { // determination the random time of the sun
     return Math.floor(Math.random() * (max - min) + min);
 }
 
 
-const definiteRandomPosition = (min = 0, max = 85) => { // determination of a random drop position
+const definiteRandomPosition = (min = randomPositionValue.min, max = randomPositionValue.max) => { // determination of a random drop position
     return Math.floor(Math.random() * (max - min) + min) + '%';
 }
 
@@ -235,19 +280,19 @@ const animate = (element, time) => { // a function that adds keyframes animation
 const showGameOver = () => { // function of showing statistics window at the end of the game
     statsBoard.classList.add('game--stats--visible');
     scorePoins.innerHTML = score;
-    accuracyPoint.innerHTML = `${Math.ceil(correctAnswers*100/countDrops)}%`;
+    accuracyPoint.innerHTML = `${Math.ceil(correctAnswers * convertToPercentageValue / countDrops)}%`;
     solvePoint.innerHTML = correctAnswers;
-    perMinutePoint.innerHTML = Math.round(correctAnswers / (performance.now() / 1000 / 60))
+    perMinutePoint.innerHTML = Math.round(correctAnswers / (performance.now() / msPerSec / secPerMinute))
 }
 
-const definiteOperandRandom = (min = 0, max = 100) => { // definition of random operands
-    max = max > 100 ? 100 : max;
-    min = min > 100 ? 100 : min;
+const definiteOperandRandom = (min = randomOperandValue.min, max = randomOperandValue.max) => { // definition of random operands
+    max = max > randomOperandValue.max ? randomOperandValue.max : max;
+    min = min > randomOperandValue.max ? randomOperandValue.max : min;
     return Math.round(min - 0.5 + Math.random() * (max - min + 1));
 
 }
 
-const definiteOperationRandom = (min = 0, max = 3) => { // definition of a random operator
+const definiteOperationRandom = (min = randomOperationValue.min, max = randomOperationValue.max) => { // definition of a random operator
     return opArr[Math.floor(min + Math.random() * (max + 1 - min))];
 }
 
@@ -261,7 +306,12 @@ const insertInsideDrop = (firstOperand, operation, secondOperand) => { // functi
     const oper = definiteOperationRandom(0, lvOperation);
     const first = definiteOperandRandom(...firstOperandRange);
     const second = definiteOperandRandom(...secondOperandRange);
-    if ((first < second && oper === '*') || (first < second && oper === '-') || (first % second !== 0 && oper === '/') || (first / second === 0 && oper === '/') || (oper === '*' && second > 10)) return insertInsideDrop(firstOperand, operation, secondOperand); // we test for division by zero and limit the complexity of mathematical expressions
+    const firstCondition = first < second && oper === '*';
+    const secondCondition = first < second && oper === '-';
+    const thirdCondition = first % second !== 0 && oper === '/';
+    const fourthCondition = first / second === 0 && oper === '/';
+    const fifthContidion = oper === '*' && second > 10;
+    if (firstCondition || secondCondition || thirdCondition || fourthCondition || fifthContidion) return insertInsideDrop(firstOperand, operation, secondOperand); // we test for division by zero and limit the complexity of mathematical expressions
     firstOperand.innerHTML = first;
     secondOperand.innerHTML = second;
     operation.innerHTML = oper === '/' ? '÷' : oper === '*' ? '×' : oper;
