@@ -270,6 +270,7 @@ const animate = (element, time) => { // a function that adds keyframes animation
                     showGameOver(); // if the game is over, the statistics window appears        
                     gameOver = !gameOver; // toggle the gemeOver flag
                     document.querySelectorAll('.circle').forEach(drop => gamePlace.removeChild(drop)) // find all the drops on the playing field at the end of the game and clear the playing field                                                                               
+                    gamePlace.removeChild(document.querySelector('.sun'))
                 };
             } catch { // if error, exit
                 return;
