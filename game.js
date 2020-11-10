@@ -148,7 +148,7 @@ const useEnter = () => { // function of pressing the Enter key
 
 const activateButtons = (e) => { // backlighting of buttons when entering from the keyboard
     buttons.forEach(btn => {
-        if (btn.dataset.num === e.key || btn.dataset.btn === e.key) {
+        if (e.code.includes('Numpad') && btn.dataset.num === e.key || btn.dataset.btn === e.key) {
             btn.classList.toggle('activate');
         }
     });
@@ -171,7 +171,7 @@ const updateDisplay = (e) => {
 }
 
 const updateDisplayWithKeyboard = (e) => { // transmission of key values ​​to the display during keyboard input
-    if (e.location !== 3) return; // check if numpad field button is actually clicked
+    if (!e.code.includes('Numpad')) return; // check if numpad field button is actually clicked
     switch (e.key) {
         case '/':
         case '*':

@@ -7,7 +7,6 @@ const beginDemonstration = () => {
     const wave = document.querySelector('.wave');
     const wave2 = document.querySelector('.wave2'); // wave
     const displayValue = document.querySelector('.display--input'); // display
-    const buttonPad = document.querySelector('.button-container'); // container with all keys 
     const buttons = document.querySelectorAll('.grid'); // all keys together
     const failBoarder = document.querySelector('.fail--text'); // pop-up notification about minus points in case of wrong answer
     const opArr = ['+', '-']; // array of operators
@@ -18,6 +17,7 @@ const beginDemonstration = () => {
     const timeToPressNum = 3500;
     const timeToPressEnter = 4000;
     const timeToUpEnter = 4500;
+    const demonstrationAnswerNum = 9
     let gameIteration = 0; // the initial number of drops hitting the water (will increase and affect the gameOver flag)
     let animationTime = 9000; // the initial duration of the fall animation (will decrease, making the game more difficult)
     let createTime = 5000
@@ -41,13 +41,6 @@ const beginDemonstration = () => {
             gamePlace.removeChild(document.querySelector('.spray'));
         }, timeForRemoveSplashes);
         displayValue.value = ''; // reset the display                                               
-    }
-
-    const updateDisplay = (e) => { // transferring the value of buttons to the display when typing with a mouse            
-        displayValue.value += e.target.dataset.num;
-        if (e.target.dataset.btn === 'Enter') {
-            useEnterKey();
-        }
     }
 
     const createDrop = () => { // droplet creation function
@@ -137,8 +130,6 @@ const beginDemonstration = () => {
         }
     }
 
-    buttonPad.addEventListener('click', updateDisplay); // event handler on the field with keys (delegation)
-
     fullButton.addEventListener('click', runFullScreenMode);
 
     window.addEventListener('load', () => { // artificial click on the background music button on page load
@@ -151,31 +142,31 @@ const beginDemonstration = () => {
         }
     })
 
-    const addClassActive = (index) => { // add a button backlight class
-        buttons[index].click();
-        buttons[index].classList.add('num--active');
-    }
-
     const removeClassActive = (index) => { // remove button backlight class
         buttons[index].classList.remove('num--active');
     }
 
     window.addEventListener('load', () => { // artificial click on buttons for demonstration
         setTimeout(() => {
-            addClassActive(2);
+            buttons[2].classList.add('num--active');
+            displayValue.value = demonstrationAnswerNum
         }, timeToPressNum);
         setTimeout(() => {
             removeClassActive(2);
-            addClassActive(10);
+            useEnterKey();
+            buttons[10].classList.add('num--active');
         }, timeToPressEnter)
         setTimeout(() => {
+            displayValue.value = ''
             removeClassActive(10);
         }, timeToUpEnter)
     })
 
     document.addEventListener("keypress", (e) => { // remove the standard Enter key response in full screen mode
-        if (e.key === 'Enter') {
+        if (e.key === 'Enter' || e.key ==='Space') {
             e.preventDefault()
+        } else {
+            return
         }
     });
 
