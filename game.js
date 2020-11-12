@@ -20,6 +20,7 @@ const accuracyPoint = document.querySelector('.accuracy'); // percentage of corr
 const solvePoint = document.querySelector('.solve'); // the value of the number of correct answers in the statistics window
 const perMinutePoint = document.querySelector('.per--minute'); // the value of the number of correct answers per minute in the statistics window
 const soundButton = document.querySelector('.sound--button'); // music button
+const highScore = document.querySelector('.high--score');
 const opArr = localStorage.getItem('operation') ? [...localStorage.getItem('operation')] : ['+', '-', '*', '/']; // check localStorage and take an array from there, if it is not there, then use the default // array of operators
 const timeForRemoveSplashes = 1000;
 const defaultScoreValue = 10;
@@ -69,6 +70,8 @@ let lvOperation = localStorage.getItem('operation') ? opArr.length - 1 : 0; // s
 let correctAnswers = 0; // initial number of correct answers
 let countDrops = 0; // the initial number of drops created
 let isSound = true;
+let highScoreValue = localStorage.getItem('highScore')
+highScore.innerHTML = localStorage.getItem('highScore') ?  localStorage.getItem('highScore') : ''
 
 const createSplashes = (one) => { // creating splashes
     let img = new Image(8, 8);
@@ -287,10 +290,13 @@ const animate = (element, time) => { // a function that adds keyframes animation
             }
         });
 }
-
 const showGameOver = () => { // function of showing statistics window at the end of the game
     statsBoard.classList.add('game--stats--visible');
     scorePoins.innerHTML = score;
+    if(highScoreValue < score){
+        highScoreValue = score
+        localStorage.setItem('highScore', score)
+    }
     accuracyPoint.innerHTML = `${Math.ceil(correctAnswers * convertToPercentageValue / countDrops)}%`;
     solvePoint.innerHTML = correctAnswers;
     perMinutePoint.innerHTML = Math.round(correctAnswers / (performance.now() / msPerSec / secPerMinute))
