@@ -68,6 +68,7 @@ let lvOperand = 10; // initial range of operand (will increase, making the game 
 let lvOperation = localStorage.getItem('operation') ? opArr.length - 1 : 0; // starting index of the array of operators (will increase to 3, adding new operators and making the game more difficult)
 let correctAnswers = 0; // initial number of correct answers
 let countDrops = 0; // the initial number of drops created
+let isSound = true;
 
 const createSplashes = (one) => { // creating splashes
     let img = new Image(8, 8);
@@ -87,7 +88,9 @@ const useSun = (sun, drop) => { // sun interaction function
         const operationEqualsDivision = sunny[1].textContent === '÷';
         const operationEqualsMultiplication = sunny[1].textContent === '×';
         if (eval(`${firstOperand}${operationEqualsDivision ? '/' : operationEqualsMultiplication? '*' : operation}${secondOperand}`) === +displayValue.value) { // сравниваем значение на дисплее с результатом выражения внутри солнца и меняем значения оператора с красивого на читаемое Eval
-            sunSound.play();
+            if (isSound) {
+                sunSound.play();
+            }
             drop.forEach(drop => {
                 createSplashes(drop); //creating splashes         
                 gamePlace.removeChild(drop); //remove all drops from the playing field
@@ -115,8 +118,10 @@ const useEnter = () => { // function of pressing the Enter key
         const operationEqualsMultiplication = children[1].textContent === '×';
         if (eval(`${firstOperand}${operationEqualsDivision ? '/' : operationEqualsMultiplication ? '*' : operation}${secondOperand}`) === +displayValue.value) { // we iterate over all the drops that are on the playing field at the moment of pressing enter and compare the value on the display with the result of the expression inside the drop and change the values ​​of the operator from beautiful to readable Eval                       
             correctAnswers++;
-            correctSound.currentTime = 0; // reset the sound of the correct answer to the beginning and turn it on
-            correctSound.play();
+            if (isSound) {
+                correctSound.currentTime = 0; // reset the sound of the correct answer to the beginning and turn it on
+                correctSound.play();
+            }
             score += scorePrice = scorePrice < defaultScoreValue ? defaultScoreValue : scorePrice; // add the current ScorePrice value to Score
             scorePrice++; // increase ScorePrice
             createSplashes(one); // creating splashes         
@@ -131,8 +136,10 @@ const useEnter = () => { // function of pressing the Enter key
                 return;
             }
             if (one !== drop[drop.length - 1]) continue; // if the answer is incorrect, then we check that among all the drops on the playing field there is no correct expression inside
-            failSound.currentTime = 0;
-            failSound.play(); // reset the sound of the wrong answer to the beginning and turn it on
+            if (isSound) {
+                failSound.currentTime = 0;
+                failSound.play(); // reset the sound of the wrong answer to the beginning and turn it on
+            }
             failBoarder.innerHTML = -(scorePrice < defaultScoreValue ? defaultScoreValue : scorePrice); // display the number of points taken from Score in the pop-up window
             failBoarder.classList.add('open'); // add a class to this window to show it
             setTimeout(() => { // after the specified time, delete and return this window to opacity 0
@@ -148,7 +155,7 @@ const useEnter = () => { // function of pressing the Enter key
 
 const activateButtons = (e) => { // backlighting of buttons when entering from the keyboard
     buttons.forEach(btn => {
-        if (e.code.includes('Numpad') && btn.dataset.num === e.key || btn.dataset.btn === e.key) {
+        if (e.code.includes('Numpad') && btn.dataset.num === e.key && e.getModifierState("NumLock") || btn.dataset.btn === e.code && e.getModifierState("NumLock")) {
             btn.classList.toggle('activate');
         }
     });
@@ -159,31 +166,32 @@ const updateDisplay = (e) => {
         displayValue.value += e.target.dataset.num
     }
     switch (e.target.dataset.btn) {
-        case '+':
+        case 'NumpadAdd':
             displayValue.value = '';
             break;
-        case '.':
+        case 'NumpadDecimal':
             displayValue.value = displayValue.value.substring(0, displayValue.value.length - 1);
             break;
-        case 'Enter':
+        case 'NumpadEnter':
             useEnter();
     }
 }
 
 const updateDisplayWithKeyboard = (e) => { // transmission of key values ​​to the display during keyboard input
-    if (!e.code.includes('Numpad')) return; // check if numpad field button is actually clicked
-    switch (e.key) {
-        case '/':
-        case '*':
-        case '-':
+    if (!e.code.includes('Numpad') || !e.getModifierState("NumLock")) return; // check if numpad field button is actually clicked
+    console.log(e.getModifierState("NumLock"))
+    switch (e.code) {
+        case 'NumpadDivide':
+        case 'NumpadMultiply':
+        case 'NumpadSubtract':
             return;
-        case '+':
+        case 'NumpadAdd':
             displayValue.value = '';
             break;
-        case '.':
+        case 'NumpadDecimal':
             displayValue.value = displayValue.value.substring(0, displayValue.value.length - 1);
             break;
-        case 'Enter':
+        case 'NumpadEnter':
             useEnter();
             break;
         default:
@@ -265,7 +273,9 @@ const animate = (element, time) => { // a function that adds keyframes animation
                 gameIteration++; // we increase the number of drops falling into the water
                 wave.style.height = `${wave.offsetHeight + 20}px`
                 wave2.style.height = `${wave.offsetHeight + 20}px` // raising the water level
-                dropSound.play(); // turn on the sound of a drop
+                if (isSound) {
+                    dropSound.play();
+                } // turn on the sound of a drop}
                 if (gameIteration >= gameOverCount) { // we compare the number of drops hitting the water required to end the game and the number of drops hitting the water
                     showGameOver(); // if the game is over, the statistics window appears        
                     gameOver = !gameOver; // toggle the gemeOver flag
@@ -357,11 +367,15 @@ window.addEventListener('load', () => { // artificial click on the background mu
 soundButton.addEventListener('click', () => { //background music keypress event handler
     if (mainAudio.paused) {
         mainAudio.play();
-    } else mainAudio.pause();
+        isSound = true;
+    } else {
+        mainAudio.pause();
+        isSound = false;
+    }
 })
 
-document.addEventListener("keypress", (e) => { // remove the standard Enter key response in full screen mode
-    if (e.key === 'Enter') {
+document.addEventListener("keydown", (e) => { // remove the standard Enter key response in full screen mode
+    if (e.key === 'Enter' || e.code === 'Space') {
         e.preventDefault()
     }
 });
