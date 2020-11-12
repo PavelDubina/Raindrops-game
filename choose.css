@@ -1,0 +1,219 @@
+body {
+  margin: 0;
+}
+
+.container {
+  max-width: 1024px;
+  max-height: 860px;
+  height: 100vh;
+  margin: 0 auto;
+  background: linear-gradient(#ffffff, #caffff);
+  text-align: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.inputs {
+  height: 60%;
+  width: 80%;
+  background: radial-gradient(ellipse at center,
+      rgba(255, 254, 234, 1) 0%,
+      rgba(255, 254, 234, 1) 35%,
+      #b7e8eb 100%);
+  display: flex;
+  border-radius: 10px;
+  flex-direction: column;
+  justify-content: center;
+  position: relative;
+}
+
+.part {
+  margin: 10px;
+}
+
+.skip {
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+}
+
+.play {
+  position: absolute;
+  bottom: 30px;
+  right: 100px;
+}
+
+p {
+  font-size: 18px;
+  font-family: "Trebuchet MS", "Lucida Sans Unicode", sans-serif;
+}
+
+.button {
+  width: 60px;
+  height: 30px;
+  background: linear-gradient(#ffffff, #caffff);
+  border-radius: 10px;
+  outline: none;
+  cursor: pointer;
+  text-decoration: none;
+}
+
+.full--button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  outline: none;
+  border: none;
+  background: white;
+  color: rgb(5, 5, 5);
+  cursor: pointer;
+}
+
+.text {
+  height: 30px;
+  font-size: 18px;
+}
+
+.full-screen {
+  width: 100%;
+  max-width: none;
+  max-height: none;
+}
+
+/*Screen 425px*/
+@media (max-width: 425px) {
+  .skip {
+    position: absolute;
+    bottom: 10px;
+    right: 100px;
+  }
+
+  .play {
+    position: absolute;
+    bottom: 10px;
+    left: 100px;
+  }
+}
+
+@media (max-width: 414px) {
+  p {
+    font-size: 12px;
+  }
+
+  .skip {
+    right: 95px;
+  }
+
+  .play {
+    left: 95px;
+  }
+}
+
+@media (max-width: 375px) {
+  p {
+    font-size: 15px;
+  }
+
+  .skip {
+    right: 80px;
+  }
+
+  .play {
+    left: 80px;
+  }
+}
+
+@media (max-width: 375px),
+(max-height: 670px) {
+  p {
+    font-size: 11px;
+  }
+}
+
+@media (max-width: 375px),
+(max-height: 640px) {
+  p {
+    font-size: 11px;
+  }
+
+  .text {
+    height: 20px;
+    font-size: 16px;
+  }
+
+  .skip {
+    right: 75px;
+  }
+
+  .play {
+    left: 75px;
+  }
+}
+
+@media (max-height: 610px) {
+  p {
+    font-size: 10px;
+    margin: 0 0 2px 0;
+  }
+
+  .text {
+    height: 15px;
+    font-size: 16px;
+  }
+
+  .skip {
+    right: 75px;
+  }
+
+  .play {
+    left: 75px;
+  }
+
+  .button {
+    width: 55px;
+    height: 25px;
+  }
+}
+
+@media (max-height: 420px) {
+  p {
+    font-size: 8px;
+  }
+
+  .text {
+    height: 10px;
+  }
+
+  .part {
+    margin: 0 10px;
+  }
+
+  .button {
+    width: 50px;
+    height: 20px;
+  }
+
+  .skip {
+    bottom: 5px;
+  }
+
+  .play {
+    bottom: 5px;
+  }
+}
+
+@media (max-width: 320px) {
+  p {
+    margin-top: 0;
+  }
+
+  .skip {
+    right: 55px;
+  }
+
+  .play {
+    left: 55px;
+  }
+}

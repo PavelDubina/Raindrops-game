@@ -1,0 +1,137 @@
+body {
+  margin: 0;
+}
+
+.container {
+  max-width: 1024px;
+  max-height: 860px;
+  height: 100vh;
+  margin: 0 auto;
+  background: linear-gradient(#ffffff, #caffff);
+  text-align: center;
+  position: relative;
+}
+
+.main--text {
+  width: 60%;
+  height: 40%;
+}
+
+.rain--text {
+  display: block;
+  text-transform: capitalize;
+  font-size: 20vw;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  color: rgb(116, 194, 194);
+  padding-bottom: 10%;
+}
+
+.other--text {
+  font-size: 2rem;
+  font-style: italic;
+  color: rgba(0, 0, 0, 0.85);
+}
+
+.first--drop {
+  position: absolute;
+  width: 20%;
+  height: 30%;
+  top: 50%;
+  left: 45%;
+}
+
+.second--drop {
+  position: absolute;
+  width: 5%;
+  top: 50%;
+  left: 25%;
+}
+
+.drop {
+  opacity: 0.3;
+}
+
+.buttons {
+  position: absolute;
+  bottom: 15vh;
+  left: 30%;
+  display: flex;
+  width: 40%;
+}
+
+form {
+  flex: 1;
+  margin: 0 2%;
+}
+
+.buttons button {
+  width: 100%;
+  background: linear-gradient(#ffffff, #caffff);
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 1.2rem;
+  padding: 5%;
+  border-radius: 20px;
+  outline: none;
+}
+
+.full--button {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  outline: none;
+  border: none;
+  background: white;
+  color: rgb(5, 5, 5);
+  cursor: pointer;
+}
+
+.full-screen {
+  width: 100%;
+  max-width: none;
+  max-height: none;
+}
+
+@media(min-width: 1024px) {
+  .rain--text {
+    font-size: 210px;
+  }
+}
+
+/*Screen 425px*/
+@media (max-width: 425px) {
+  .buttons {
+    left: 15%;
+    width: 70%;
+  }
+}
+
+@media (max-width: 414px) {
+  .buttons {
+    left: 10%;
+    width: 80%;
+  }
+}
+
+@media (max-width: 375px) {
+  .buttons {
+    left: 12%;
+    width: 75%;
+  }
+}
+
+@media (max-width: 360px) {
+  .container {}
+
+  .buttons {
+    left: 10%;
+    width: 80%;
+  }
+}
+
+@media (max-width: 320px) {
+  .buttons {
+    left: 5%;
+    width: 90%;
+  }
+}

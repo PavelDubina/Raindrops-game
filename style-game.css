@@ -1,0 +1,579 @@
+body {
+  margin: 0;
+}
+
+/*main page*/
+.game--container {
+  display: flex;
+  position: relative;
+  max-width: 1024px;
+  max-height: 860px;
+  height: 100vh;
+  margin: 0 auto;
+}
+
+.game--place {
+  background: radial-gradient(ellipse at center,
+      rgba(255, 254, 234, 1) 0%,
+      rgba(255, 254, 234, 1) 35%,
+      #b7e8eb 100%);
+  flex: 2.5;
+  position: relative;
+  overflow: hidden;
+}
+
+.number--place {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background: rgba(134, 241, 200, 0.4);
+  flex: 1;
+}
+
+/*expression*/
+.circle {
+  position: absolute;
+  top: 0%;
+  background: rgba(134, 241, 200, 0.4);
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  border: 2px solid rgba(54, 95, 79, 0.24);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+  z-index: 0;
+}
+
+.sun {
+  position: absolute;
+  top: 0%;
+  background: rgba(255, 251, 0, 0.4);
+  border-radius: 50%;
+  width: 70px;
+  height: 70px;
+  border: 2px solid rgba(255, 187, 0, 0.24);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  font-weight: bold;
+  z-index: 0;
+}
+
+.operation {
+  position: absolute;
+  left: 5px;
+  top: 17px;
+}
+
+/*img*/
+.stone {
+  position: absolute;
+  bottom: -5%;
+  width: 100%;
+  height: 30%;
+}
+
+/*wave*/
+.wave {
+  background: url(./img/wave.svg) repeat-x;
+  position: absolute;
+  bottom: -25px;
+  width: 5120px;
+  height: 18%;
+  animation: wave 7s cubic-bezier(0.36, 0.45, 0.63, 0.53) infinite;
+  transform: translate3d(0, 0, 0);
+  z-index: 2;
+}
+
+.wave2 {
+  bottom: -30px;
+  animation: wave 7s cubic-bezier(0.36, 0.45, 0.63, 0.53) -0.125s infinite,
+    swell 7s ease -1.25s infinite;
+  opacity: 1;
+  z-index: 2;
+}
+
+@keyframes wave {
+  0% {
+    margin-left: 0;
+  }
+
+  100% {
+    margin-left: -1280px;
+  }
+}
+
+@keyframes swell {
+
+  0%,
+  100% {
+    transform: translate3d(0, -25px, 0);
+  }
+
+  50% {
+    transform: translate3d(0, 5px, 0);
+  }
+}
+p{
+  margin: 0;
+}
+/*Score*/
+.score {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  width: 100%;
+  height: 8%;
+  background: rgba(255, 255, 255, 0.6);
+  top: 0;
+  align-items: center;
+  border: 1px solid rgb(255, 255, 255);
+  border-top: none;
+  font-size: 1.5rem;
+  font-family: "Gill Sans", "Gill Sans MT", Calibri, "Trebuchet MS", sans-serif;
+}
+
+.score--num {
+  color: crimson;
+  font-weight: bold;
+}
+.high--score {
+  color: rgb(180, 168, 0);
+}
+
+/*input place*/
+.num--container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(207, 143, 70, 0.548);
+  box-shadow: 1px 4px 3px 2px rgba(0, 0, 0, 0.2);
+  width: 90%;
+  height: 50%;
+}
+
+.display--container {
+  display: flex;
+  flex: 1;
+  margin-top: 2%;
+  background: rgba(255, 255, 255, 0.6);
+  width: 95%;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.display--input {
+  border-bottom-width: 0;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  border: 1px solid rgb(158, 158, 158);
+  height: 100%;
+  width: 100%;
+  text-align: center;
+  font-size: 6rem;
+}
+
+.button-container {
+  margin-bottom: 2%;
+  width: 95%;
+  flex: 3;
+  display: grid;
+  grid-template-rows: repeat(4, 25%);
+  grid-template-columns: repeat(4, 25%);
+}
+
+.clear,
+.enter {
+  text-transform: capitalize;
+  grid-row: span 2;
+}
+
+.del {
+  text-transform: capitalize;
+}
+
+.null {
+  grid-column: span 2;
+}
+
+.grid {
+  cursor: pointer;
+  font-size: 100%;
+  font-weight: bold;
+  border: 1px solid rgb(158, 158, 158);
+  outline: none;
+}
+
+.grid:active {
+  box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.activate {
+  box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+.num {
+  font-size: 2rem;
+}
+
+.fail--text {
+  position: absolute;
+  color: crimson;
+  font-weight: bold;
+  font-size: 5rem;
+  top: 40%;
+  left: 40%;
+  opacity: 0;
+}
+
+.open {
+  animation: fail 2s linear;
+}
+
+.game--stats {
+  position: absolute;
+  top: 25%;
+  left: 40%;
+  width: 20%;
+  height: 30%;
+  background: rgb(228, 237, 240);
+  border-radius: 5%;
+  text-transform: capitalize;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  z-index: 5;
+  font-size: 18px;
+  transform: translateY(-100vh);
+  align-items: center;
+}
+
+.game--stats--visible {
+  transition: transform 2s linear;
+  transform: translateY(0);
+}
+
+.head {
+  margin-bottom: 0;
+  margin-top: 8px;
+  font-weight: bold;
+  font-size: 1.8rem;
+  font-style: italic;
+}
+
+.point {
+  color: rgb(0, 183, 255);
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.score--text {
+  margin: 0px;
+  color: red;
+  font-weight: bold;
+  font-size: 1.5rem;
+  text-transform: lowercase;
+}
+
+.description {
+  margin: 0.4rem;
+  color: rgb(131, 99, 57);
+  font-weight: bold;
+  font-size: 1.3rem;
+}
+
+.reload--game {
+  margin-top: 5%;
+  height: 100%;
+  width: 100%;
+  padding: 3%;
+  outline: none;
+  border-radius: 10px;
+  border: 1px solid rgb(131, 99, 57);
+  background: rgba(255, 255, 187, 0.76);
+  text-transform: capitalize;
+  font-weight: bold;
+  color: rgb(131, 99, 57);
+}
+
+.reload--game:active {
+  box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+form {
+  width: 30%;
+  padding: 3% 0;
+  margin-bottom: 10px;
+}
+
+.spray {
+  position: absolute;
+  z-index: 1;
+  animation: drop 1s ease;
+}
+
+@keyframes drop {
+  0% {}
+
+  100% {
+    transform: scale(12) rotate(45deg);
+    opacity: 0;
+  }
+}
+
+@keyframes fail {
+  0% {
+    opacity: 0;
+  }
+
+  50% {
+    opacity: 1;
+  }
+
+  100% {
+    opacity: 0;
+  }
+}
+
+.but {
+  position: absolute;
+  bottom: 0;
+  outline: none;
+  border: none;
+  background: white;
+  color: rgb(5, 5, 5);
+  cursor: pointer;
+}
+
+.full-screen {
+  width: 100%;
+  max-height: none;
+  max-width: none;
+}
+
+.full--game--place {
+  flex: 4;
+}
+
+.full--button {
+  right: 0;
+}
+
+.sound--button {
+  left: 0;
+}
+
+.sound--button:active {
+  box-shadow: inset 2px 2px 10px rgba(0, 0, 0, 0.5);
+}
+
+@media (max-height: 660px) {
+  .game--stats {
+    width: 30%;
+    left: 30%;
+  }
+
+  .head {
+    font-size: 1.2rem;
+  }
+
+  .point {
+    font-size: 0.8rem;
+  }
+
+  .score--text {
+    font-size: 1.2rem;
+  }
+
+  .description {
+    font-size: 0.9rem;
+    margin: 0.2rem;
+  }
+
+  form {
+    width: 30%;
+    padding: 0;
+    margin-bottom: 10px;
+  }
+}
+
+/*Screen 768px*/
+@media (max-width: 768px) {
+  .num--container {
+    height: 40%;
+  }
+
+  .score {
+    font-size: 1.2rem;
+  }
+
+  .circle {
+    width: 50px;
+    height: 50px;
+    font-size: 1.4rem;
+  }
+
+  .sun {
+    width: 50px;
+    height: 50px;
+    font-size: 1.4rem;
+  }
+
+  .operation {
+    position: absolute;
+    left: 3px;
+    top: 12px;
+  }
+
+  .game--stats {
+    width: 40%;
+    left: 30%;
+  }
+
+  .head {
+    font-size: 1.2rem;
+  }
+
+  .point {
+    font-size: 0.9rem;
+  }
+
+  .score--text {
+    font-size: 1.2rem;
+  }
+
+  .description {
+    font-size: 0.9rem;
+    margin: 0.2rem;
+  }
+}
+
+/*Screen 425px*/
+@media (max-width: 425px) {
+  p{
+    padding: 0 10px;
+  }
+  .score{
+    flex-direction: row;
+    justify-content: center;
+  }
+  .game--container {
+    flex-direction: column;
+  }
+
+  .num--container {
+    height: 80%;
+  }
+
+  .button-container {
+    width: 95%;
+    height: 70%;
+  }
+
+  .display--container {
+    height: 20%;
+  }
+
+  .score {
+    font-size: 1.1rem;
+    height: 8%;
+  }
+
+  .circle {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+
+  .sun {
+    width: 40px;
+    height: 40px;
+    font-size: 1.2rem;
+  }
+
+  .operation {
+    position: absolute;
+    left: 3px;
+    top: 9px;
+  }
+
+  .display--input {
+    font-size: 3rem;
+  }
+
+  .num {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 414px) {
+  .game--stats {
+    width: 80%;
+    left: 10%;
+  }
+}
+
+@media (max-width: 375px) {
+  .display--input {
+    font-size: 2.2rem;
+  }
+
+  .description {
+    margin: 0.2rem;
+  }
+}
+
+@media (max-width: 360px) {
+  .game--stats {
+    width: 80%;
+    left: 10%;
+  }
+
+  .head {
+    font-size: 1.1rem;
+  }
+
+  .point {
+    font-size: 0.9rem;
+  }
+
+  .score--text {
+    font-size: 1.1rem;
+  }
+
+  .description {
+    font-size: 0.8rem;
+    margin: 0.2rem;
+  }
+}
+
+@media (max-width: 320px) {
+  .display--input {
+    font-size: 1.8rem;
+  }
+
+  .head {
+    font-size: 1rem;
+  }
+
+  .point {
+    font-size: 0.9rem;
+  }
+
+  .score--text {
+    font-size: 1rem;
+  }
+
+  .description {
+    font-size: 0.8rem;
+    margin: 0.1rem;
+  }
+}

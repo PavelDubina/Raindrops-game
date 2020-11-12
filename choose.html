@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="choose.css">
+  <link rel="icon" href="./img/drop.jpg">
+  <title>Raindrops</title>
+</head>
+
+<body>
+  <div class="container">
+    <div class="inputs">
+      <div class="first--number part">
+        <p>Enter the range of values ​​of the first number in format x-y</p>
+        <input class="text first--input" maxlength="6" type="text">
+      </div>
+      <div class="operation part">
+        <p>Enter characters or one character of a mathematical operation</p>
+        <input class="text operation--input" maxlength="4" type="text">
+      </div>
+      <div class="second--number part">
+        <p>Enter the range of values ​​of the second number in format x-y or enter one number</p>
+        <input class="text second--input" maxlength="6" type="text">
+      </div>
+      <form action='./index-game.html'>
+        <input class="play button" type="submit" value="Play">
+      </form>
+      <form action='./index-game.html'>
+        <input class="skip button" type="submit" value="Skip">
+      </form>
+    </div>
+    <button class="full--button">⛶</button>
+  </div>
+  <script src="./choose.js"></script>
+</body>
+
+</html>
